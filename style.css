@@ -64,7 +64,7 @@ img, video { display: block; width: 100%; }
   align-items: center;
   justify-content: space-between;
   padding: 18px var(--col-margin);
-  background: var(--black);
+  background: #676057;
 }
 
 .nav-name {
@@ -336,6 +336,10 @@ img, video { display: block; width: 100%; }
   background: #0a0a0a;
   overflow: hidden;
   line-height: 0;
+}
+
+.portfolio-slot + .portfolio-slot {
+  margin-top: -1px;
 }
 
 .portfolio-slot img,
