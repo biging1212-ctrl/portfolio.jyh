@@ -408,7 +408,7 @@ img, video { display: block; width: 100%; }
   font-family: var(--font);
 }
 
-/* ── Page 46: Closing ── */
+/* ── Page 70: Closing ── */
 /*
   Figma 1920×1080 기준
   vw = px ÷ 1920 × 100
@@ -418,7 +418,7 @@ img, video { display: block; width: 100%; }
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  background: #000000;
+  background: #676057;
   overflow: hidden;
 }
 
