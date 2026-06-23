@@ -65,6 +65,7 @@ img, video { display: block; width: 100%; }
   justify-content: space-between;
   padding: 18px var(--col-margin);
   background: #000000;
+}
 
 .nav-name {
   font-size: clamp(9px, 0.625vw, 12px);
