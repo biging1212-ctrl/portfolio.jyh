@@ -53,8 +53,8 @@
 })();
 
 // ── Config ──
-const TOTAL_PAGES = 74; // pages 2–75 (page 76 = closing HTML)
-const FINAL_PAGE_TOTAL = 76;
+const TOTAL_PAGES = 65; // pages 2–66 (page 67 = closing HTML)
+const FINAL_PAGE_TOTAL = 67;
 const STORAGE_KEY = 'portfolio_slots';
 
 // ── Load saved slots from localStorage ──
@@ -72,7 +72,7 @@ const section = document.getElementById('portfolio');
 const saved   = loadSaved();
 
 for (let i = 1; i <= TOTAL_PAGES; i++) {
-  const pageNum = i + 1; // pages 2–75
+  const pageNum = i + 1; // pages 2–66
   const slot    = document.createElement('div');
   slot.className   = 'portfolio-slot';
   slot.dataset.index = i;
@@ -86,32 +86,6 @@ for (let i = 1; i <= TOTAL_PAGES; i++) {
   numBadge.textContent = `${String(pageNum).padStart(2, '0')} / ${FINAL_PAGE_TOTAL}`;
   slot.appendChild(numBadge);
 
-// ── PAGE 61: YouTube Video ──
-if (pageNum === 61) {
-  slot.classList.add('youtube-page');
-
-  const videoWrap = document.createElement('div');
-  videoWrap.className = 'youtube-video-wrap';
-
-  const iframe = document.createElement('iframe');
-
-  iframe.src =
-    'https://www.youtube-nocookie.com/embed/9JKTAvEiiZU?rel=0&playsinline=1';
-
-  iframe.title = 'Portfolio YouTube Video';
-
-  iframe.allow =
-    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-
-  iframe.allowFullscreen = true;
-
-  videoWrap.appendChild(iframe);
-  slot.appendChild(videoWrap);
-
-  section.appendChild(slot);
-
-  continue;
-}
   
   // upload zone
   const zone = document.createElement('div');
