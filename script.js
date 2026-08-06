@@ -53,16 +53,15 @@
 })();
 
 // ── Config ──
-const TOTAL_PAGES = 63; // pages 2–64 (page 65 = closing HTML)
-const FINAL_PAGE_TOTAL = 65;
+const TOTAL_PAGES = 58; // pages 2–56 (page 57 = closing HTML)
+const FINAL_PAGE_TOTAL = 57;
 const STORAGE_KEY = 'portfolio_slots';
 
 const VIDEO_PAGES = new Set([
-  4, 9, 19, 22, 25, 26, 28,
-  30, 32, 33, 34,
-  37, 38, 39, 43,
-  45, 49, 51, 56,
-  58, 62, 64
+  5, 7, 11, 13, 17, 21,
+  24, 25, 30, 31, 32, 33,
+  34, 37, 38, 39,
+  46, 47, 51
 ]);
 
 // ── Load saved slots from localStorage ──
@@ -80,7 +79,7 @@ const section = document.getElementById('portfolio');
 const saved   = loadSaved();
 
 for (let i = 1; i <= TOTAL_PAGES; i++) {
-  const pageNum = i + 1; // pages 2–64
+  const pageNum = i + 1; // pages 2–56
   const slot    = document.createElement('div');
   slot.className   = 'portfolio-slot';
   slot.dataset.index = i;
@@ -107,33 +106,6 @@ if (pageNum === 2) {
   addProjectIndex(slot);
 
   section.appendChild(slot);
-  continue;
-}
-  
-// ── PAGE 17: YouTube Video ──
-if (pageNum === 17) {
-  slot.classList.add('youtube-page');
-
-  const videoWrap = document.createElement('div');
-  videoWrap.className = 'youtube-video-wrap';
-
-  const iframe = document.createElement('iframe');
-
-  iframe.src =
-    'https://www.youtube-nocookie.com/embed/9JKTAvEiiZU?rel=0&playsinline=1';
-
-  iframe.title = 'Portfolio YouTube Video';
-
-  iframe.allow =
-    'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-
-  iframe.allowFullscreen = true;
-
-  videoWrap.appendChild(iframe);
-  slot.appendChild(videoWrap);
-
-  section.appendChild(slot);
-
   continue;
 }
   
@@ -240,19 +212,6 @@ function handleFile(slot, zone, file, index) {
   };
   reader.readAsDataURL(file);
 }
-
-// 47페이지 영상의 소리만 조절
-const page47SoundObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      const video = entry.target;
-
-      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
-        video.volume = 0.3;
-        video.muted = false;
-      } else {
-        video.muted = true;
-      }
     });
   },
   {
@@ -279,24 +238,6 @@ function renderMedia(slot, zone, type, src) {
   vid.controls = false;
     
   slot.appendChild(vid);
-
-  // page-34에만 사운드 버튼 추가
-  if (pageNum === 34) {
-    const soundBtn = document.createElement('button');
-    soundBtn.className = 'sound-toggle-btn';
-    soundBtn.type = 'button';
-    soundBtn.textContent = 'SOUND OFF';
-
-    soundBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      vid.muted = !vid.muted;
-      soundBtn.textContent = vid.muted
-          ? 'SOUND OFF'
-          : 'SOUND ON';
-
-      soundBtn.classList.toggle('is-on', !vid.muted);
     });
       
   slot.appendChild(soundBtn);
@@ -437,8 +378,8 @@ function addProjectIndex(slot) {
   const projects = [
     {
       num: '01',
-      title: 'WINKLE',
-      desc: 'Branding / Product / Character',
+      title: '삼쩜삼',
+      desc: 'Pop-up store',
       image: 'assets/images/project-01.png',
       target: '#page-03',
       imgX: 220,
@@ -446,37 +387,37 @@ function addProjectIndex(slot) {
     },
     {
       num: '02',
-      title: 'BINGGRAE',
-      desc: 'Pop-up store / Character / Content',
+      title: 'BPT',
+      desc: 'Rebranding',
       image: 'assets/images/project-02.png',
-      target: '#page-21',
+      target: '#page-14',
       imgX: 542,
       textX: 542
     },
     {
       num: '03',
-      title: 'ORION',
+      title: '푸본현대생명',
       desc: 'Sns Content',
       image: 'assets/images/project-03.png',
-      target: '#page-35',
+      target: '#page-26',
       imgX: 864,
       textX: 864
     },
     {
       num: '04',
-      title: 'KIMCHI SAUCE',
-      desc: 'Product /  Retail',
+      title: 'ORION',
+      desc: 'Sns Content',
       image: 'assets/images/project-04.png',
-      target: '#page-42',
+      target: '#page-35',
       imgX: 1186,
       textX: 1186
     },
     {
       num: '05',
-      title: '삼쩜삼',
-      desc: 'Pop-up store',
+      title: 'DAYMINE',
+      desc: 'Branding / Product',
       image: 'assets/images/project-05.png',
-      target: '#page-54',
+      target: '#page-42',
       imgX: 1508,
       textX: 1508
     }
