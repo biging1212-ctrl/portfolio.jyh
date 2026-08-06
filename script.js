@@ -53,7 +53,7 @@
 })();
 
 // ── Config ──
-const TOTAL_PAGES = 58; // pages 2–56 (page 57 = closing HTML)
+const TOTAL_PAGES = 55; // pages 2–56 (page 57 = closing HTML)
 const FINAL_PAGE_TOTAL = 57;
 const STORAGE_KEY = 'portfolio_slots';
 
@@ -128,11 +128,15 @@ if (pageNum === 2) {
   const padded2 = String(pageNum).padStart(2, '0');
   const padded3 = String(pageNum).padStart(3, '0');
 
-  const candidates = [
-  { type: 'image', src: `assets/images/page-${padded2}.png` },
-  { type: 'video', src: `assets/videos/page-${padded2}.mp4` },
-];
-
+  const candidates = VIDEO_PAGES.has(pageNum)
+  ? [
+      { type: 'video', src: `assets/videos/page-${padded2}.mp4` }
+    ]
+  : [
+      { type: 'image', src: `assets/images/page-${padded2}.png` },
+      { type: 'video', src: `assets/videos/page-${padded2}.mp4` }
+    ];
+  
   function tryCandidate(index = 0) {
     if (index >= candidates.length) {
       console.warn(`page-${padded2} 파일을 찾지 못했습니다.`);
@@ -208,16 +212,12 @@ function handleFile(slot, zone, file, index) {
       const sv = loadSaved();
       sv[index] = { type, src };
       saveSaved(sv);
-    } catch { /* quota exceeded for large files */ }
+    } catch { /* quota exceeded for large files */ 
+    }
   };
+  
   reader.readAsDataURL(file);
 }
-    });
-  },
-  {
-    threshold: [0, 0.6, 1]
-  }
-);
 
 // ── Render image or video inside slot ──
 function renderMedia(slot, zone, type, src) {
@@ -237,11 +237,7 @@ function renderMedia(slot, zone, type, src) {
   vid.muted = true;
   vid.controls = false;
     
-  slot.appendChild(vid);
-    });
-      
-  slot.appendChild(soundBtn);
-  }    
+  slot.appendChild(vid);  
   } else {
   const img = document.createElement('img');
 
