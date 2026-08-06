@@ -9,7 +9,7 @@
 */
 
 :root {
-  --black: #676057;
+  --black: #000000;
   --white: #ffffff;
   --col-margin: clamp(40px, 10.417vw, 200px); /* 200px @ 1920px */
   --row-margin: clamp(32px, 9.259vh, 100px);  /* 100px @ 1080px */
