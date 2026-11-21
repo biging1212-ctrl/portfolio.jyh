@@ -1,913 +1,1908 @@
-/* ── Reset & Base ── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@import url("https://fonts.googleapis.com/css2?family=League+Gothic&family=Pragati+Narrow:wght@400;700&display=swap");
+
+/* ===== 기존 style.css / 병합 시작 ===== */
+/* ==========================================================
+   JEON YOUNG HYEON — PORTFOLIO 2026
+   Figma reference: 1920 × 1080 (pages 01–03)
+   Desktop: pixel-based artboard, uniformly scaled to viewport.
+   Mobile: independent readable layout, not tiny scaled artboard.
+   ========================================================== */
+
+:root{
+  color-scheme: light;
+  --paper: #f9f9f9;
+  --ink: #030303;
+  --muted: #bfbfbf;
+  --panel-fill: #f2f2f2;
+  --font-latin: "Fustat", "Arial", sans-serif;
+  --font-ko: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --artboard-scale: 1;
+}
+
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+body{
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-latin);
+  overflow-x: hidden;
+}
+button, a{ -webkit-tap-highlight-color: transparent; }
+button{ font: inherit; }
+a{ color: inherit; }
+h1, h2, h3, p, dl, dd{ margin: 0; }
+button:focus-visible, a:focus-visible{
+  outline: 2px solid #3c7857;
+  outline-offset: 3px;
+}
 
 /*
-  Figma canvas: 1920 × 1080
-  rows margin: 100px  → 9.259vh
-  columns margin: 200px → 10.417vw
-  Font: Fustat
-*/
-
-:root {
-  --black: #000000;
-  --white: #ffffff;
-  --col-margin: clamp(40px, 10.417vw, 200px); /* 200px @ 1920px */
-  --row-margin: clamp(32px, 9.259vh, 100px);  /* 100px @ 1080px */
-  --font: 'Fustat', system-ui, sans-serif;
-  --nav-h: 53px; /* fixed nav height */
+ * One continuous scroll composed of independent 1920px-wide Figma artboards.
+ * Section heights follow the scaled canvas, not the monitor's height.
+ * JS writes --artboard-scale and --scaled-height from the available viewport width.
+ * This also supports future taller frames via data-design-height on each section.
+ */
+.portfolio-page{
+  position: relative;
+  width: 100%;
+  height: var(--scaled-height, 56.25vw);
+  min-height: 0;
+  background: var(--paper);
+  overflow: hidden;
+  isolation: isolate;
 }
-
-html { scroll-behavior: smooth; cursor: none; }
-
-/* ── Custom Cursor ── */
-.custom-cursor {
-  position: fixed;
-  top: 0; left: 0;
-  width: 60px;
-  height: 60px;
-  border: 1.5px solid #ffffff;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.08s ease-out, opacity 0.2s;
-  opacity: 0;
-}
-
-.custom-cursor.visible { opacity: 1; }
-
-/* Magnifier mode — on mousedown */
-.custom-cursor.magnify {
-  width: 200px;
-  height: 200px;
-  background: transparent;
-  transition: width 0.2s ease, height 0.2s ease, transform 0.08s ease-out;
-}
-
-body {
-  background: var(--black);
-  color: var(--white);
-  font-family: var(--font);
-  -webkit-font-smoothing: antialiased;
-}
-
-a { color: inherit; text-decoration: none; }
-img, video { display: block; width: 100%; }
-
-/* ── NAV ── */
-.nav {
-  position: fixed;
+.stage{
+  position: absolute;
   top: 0;
   left: 0;
-  right: 0;
+  width: 1920px;
+  height: var(--design-height, 1080px);
+  min-height: 0;
+  transform: scale(var(--artboard-scale));
+  transform-origin: 0 0;
+  background: var(--paper);
+}
 
-  height: var(--nav-h);
-  z-index: 100;
 
-  background: #000000;
+/* Reserved artboards for future projects: pages 10-15. */
+.empty-page .stage { background: #f9f9f9; }
 
-  /* Page 01에서는 숨김 */
+.section-label{
+  position: absolute;
+  top: 100px;
+  font: 500 16px/1.25 var(--font-latin);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.label-left{ left: 100px; }
+.label-right{ right: 100px; text-align: right; }
+
+/* ---------------------- PAGE 01 ------------------------- */
+.cover-name{
+  position: absolute;
+  top: 90.39px;
+  left: 100px;
+  width: 1720px;
+  font: 800 208.93px/1 var(--font-latin);
+  letter-spacing: -6.2679px;
+  white-space: nowrap;
+}
+.cover-services .service-item{
+  position: absolute;
+  top: 269px;
+  font: 500 16px/20px var(--font-latin);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.service-identity{ left: 100px; }
+.service-communication{ left: 644px; }
+.service-content{ left: 1222px; }
+.cover-year{
+  position: absolute;
+  right: 100px;
+  bottom: 106px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font: 800 45px/1.2 var(--font-latin);
+  letter-spacing: -1.8px;
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+.cover-year .cover-bracket{
+  font-weight: 500;
+  font-size: 60px;
+  letter-spacing: 0;
+}
+
+/* ---------------------- PAGE 02 ------------------------- */
+.introduce-headline{
+  position: absolute;
+  left: 99px;
+  top: 200px;
+  font: 400 61.33px/1.417 var(--font-ko);
+  letter-spacing: -2.453px;
+  white-space: nowrap;
+}
+.introduce-headline strong{ font-weight: 650; }
+.introduce-headline .headline-light{ font-weight: 300; }
+.introduce-statement{
+  position: absolute;
+  top: 300px;
+  left: 100px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.introduce-statement h3{
+  font: 800 30px/1.3 var(--font-latin);
+  letter-spacing: -1.2px;
+  margin-bottom: 25px;
+}
+.introduce-statement p{
+  font: 600 28px/1.5 var(--font-ko);
+  letter-spacing: -1.12px;
+}
+
+.panel-stack{
+  position: absolute;
+  left: 101px;
+  top: 620px;
+  width: 1720px;
+  height: 369px;
+}
+.info-panel{ position: absolute; width: 656px; }
+.panel-about{ top: 0; left: 0; }
+.panel-education{ top: 63px; left: 534px; }
+.panel-career{ top: 126px; left: 1064px; }
+.panel-bar{
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 45px;
+  padding: 0 38px;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  color: #fff;
+  font: 800 20px/1.4 var(--font-latin);
+  letter-spacing: -0.4px;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  z-index: 2;
+}
+.panel-content{
+  position: absolute;
+  top: 45px;
+  left: 0;
+  width: 484px;
+  padding: 26px 34px;
+  background: var(--panel-fill);
+  color: #333;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-
-  transition: opacity 0.2s ease;
+  transform: translateY(-6px);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+  z-index: 4;
 }
-
-
-/* 이름 이동이 완료되면 NAV 표시 */
-.nav.show-nav {
+.info-panel:hover, .info-panel:focus-within, .info-panel.is-open{ z-index: 10; }
+.info-panel:hover .panel-content, .info-panel:focus-within .panel-content, .info-panel.is-open .panel-content{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+  transform: translateY(0);
 }
-
-
-/* NAV 중앙 이름 */
-.nav-home-name {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-
-  font-family: var(--font);
-  font-weight: 700;
-  font-size: 14px;
-
-  letter-spacing: -0.02em;
-  line-height: 1;
-
-  color: #ffffff;
-
-  white-space: nowrap;
-
-  /* flying-name이 도착하기 전까지 숨김 */
-  opacity: 0;
-
-  transition: opacity 0.15s ease;
-}
-
-
-/* 이동 완료 후 실제 NAV 이름 표시 */
-.nav.show-nav .nav-home-name {
-  opacity: 1;
-}
-
-
-/* 오른쪽 메뉴 */
-.nav-links {
-  position: absolute;
-
-  right: var(--col-margin);
-  top: 50%;
-  transform: translateY(-50%);
-
-  display: flex;
-  gap: clamp(16px, 1.875vw, 36px);
-
-  list-style: none;
-}
-
-
-/* ── Page 01 이름 → NAV 이동용 이름 ── */
-.flying-name {
-  position: fixed;
-
-  left: 0;
-  top: 0;
-
-  z-index: 150;
-
-  font-family: var(--font);
-  font-weight: 700;
-
-  letter-spacing: -0.02em;
-  line-height: 1;
-
-  color: #ffffff;
-
-  white-space: nowrap;
-
-  pointer-events: none;
-  opacity: 0;
-
-  transform-origin: center center;
-
-  will-change: left, top, transform, opacity;
-}
-
-.nav-links a {
-  font-size: clamp(9px, 0.625vw, 12px);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-
-.nav-links a:hover,
-.nav-links a.active { opacity: 1; }
-
-/* ── HERO ── */
-.hero {
-  position: relative;
-
-  width: 100%;
-  max-width: 1920px;
-  aspect-ratio: 16 / 9;
-
-  margin: 0 auto;
-
-  background: #000000;
-  color: #ffffff;
-
-  overflow: hidden;
-  container-type: inline-size;
-}
-
-/* ── Hero background upload ── */
-.hero-bg-zone {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.hero-bg-zone:hover { background: rgba(255,255,255,0.03); }
-
-.hero-bg-zone.has-media { cursor: default; }
-.hero-bg-zone.has-media:hover { background: transparent; }
-
-.hero-bg-zone input[type="file"] {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  font-size: 0;
-  z-index: 1;
-}
-
-.hero-bg-zone.has-media input[type="file"] { pointer-events: none; }
-
-.hero-bg-label {
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  opacity: 0.2;
-  pointer-events: none;
-}
-
-.hero-bg-zone.has-media .hero-bg-label { display: none; }
-
-
-/* replace button — shows on hover when image is set */
-.hero-bg-replace {
-  position: absolute;
-  bottom: calc(var(--row-margin) + 40px);
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  opacity: 0;
-  background: rgba(0,0,0,0.6);
-  padding: 6px 14px;
-  cursor: pointer;
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: opacity 0.2s;
-  z-index: 5;
-  pointer-events: auto;
-}
-
-.hero:hover .hero-bg-replace.visible { opacity: 1; }
-
-/* all hero content sits above the background */
-.hero-center { z-index: 2; }
-
-/* ── Corner labels ── */
-.hero-corner {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(2px, 0.26vw, 5px);
-  opacity: 0;
-  animation: fadeIn 0.6s forwards;
-}
-
-.hero-corner span {
-  font-size: clamp(8px, 0.573vw, 11px);
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  line-height: 1.6;
-  text-transform: uppercase;
-}
-
-.hero-corner.top-left  {
-  top: calc(var(--nav-h) + var(--row-margin));
-  left: var(--col-margin);
-  animation-delay: 0.3s;
-}
-.hero-corner.top-right {
-  top: calc(var(--nav-h) + var(--row-margin));
-  right: var(--col-margin);
-  text-align: right;
-  animation-delay: 0.35s;
-}
-.hero-corner.mid-left {
-  top: 50%;
-  left: var(--col-margin);
-  transform: translateY(-50%);
-  animation-delay: 0.4s;
-}
-.hero-corner.mid-right {
-  top: 50%;
-  right: var(--col-margin);
-  text-align: right;
-  transform: translateY(-50%);
-  animation-delay: 0.4s;
-}
-
-/* ── Center title ── */
-/* Figma: X 554px, Y 100px on 1920×1080 canvas */
-.hero-center {
-  position: absolute;
-  left: 28.854vw;   /* 554 ÷ 1920 × 100 */
-  top: 9.259vh;     /* 100 ÷ 1080 × 100 */
-  text-align: center;
-}
-
-.hero-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.hero-title .line {
-  display: block;
-  /* 150px @ 1920px = 7.8125vw */
-  font-size: min(160px, 8.333333cqw);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  line-height: 0.95;
-  min-height: 0.95em;
-}
-
-/* blinking cursor — sits inline after typed text */
-.hero-cursor {
-  display: inline;
-  font-size: inherit;
-  font-weight: 300;
-  line-height: inherit;
-  animation: blink 0.8s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-
-/* ── Bottom bar ── */
-.hero-bottom {
-  position: absolute;
-  bottom: var(--row-margin);
-  left: var(--col-margin);
-  right: var(--col-margin);
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-
-.hero-bottom-left {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(2px, 0.26vw, 5px);
-  opacity: 0;
-  animation: fadeIn 0.6s 0.6s forwards;
-}
-
-.hero-bottom-left span {
-  font-size: clamp(8px, 0.573vw, 11px);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  opacity: 0.5;
-  text-transform: uppercase;
-}
-
-.hero-bottom-left span:first-child { opacity: 1; }
-
-.hero-bottom-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 0;
-  white-space: nowrap;
-  opacity: 0;
-  animation: fadeIn 0.6s 0.5s forwards;
-}
-
-.name-large {
-  font-size: clamp(20px, 3.125vw, 60px);
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-}
-
-.hero-bottom-right {
-  opacity: 0;
-  animation: fadeIn 0.6s 0.7s forwards;
-}
-
-.begin-link {
-  font-size: clamp(8px, 0.573vw, 11px);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  transition: opacity 0.2s;
-}
-
-.begin-link:hover { opacity: 0.5; }
-
-/* ── Keyframes ── */
-@keyframes fadeIn { to { opacity: 1; } }
-
-/* ── Hero Side Typography ── */
-
-.hero-side-text {
-  position: absolute;
-  font-family: var(--font);
-  font-weight: 500;
-
-  font-size: min(14px, 0.729167cqw);
-
-  line-height: 1.3;
-  letter-spacing: 0;
-  color: #ffffff;
-  white-space: nowrap;
-  z-index: 3;
-}
-
-
-/* 좌측 상단 */
-.hero-side-top-left {
-  left: 10.4167%;   /* 200 / 1920 */
-  top: 10%;
-  text-align: left;
-}
-
-
-/* 우측 상단 */
-.hero-side-top-right {
-  right: 10.4167%;  /* 200 / 1920 */
-  top: 10%;
-  text-align: right;
-}
-
-
-/* 좌측 중간 */
-.hero-side-mid-left {
-  left: 10.4167%;
-  top: 47%;
-  text-align: left;
-}
-
-
-/* 우측 중간 */
-.hero-side-mid-right {
-  right: 10.4167%;
-  top: 47%;
-  text-align: right;
-}
-
-
-/* ── Hero Bottom Name ── */
-
-.hero-bottom-name {
-  position: absolute;
-
-  left: 50%;
-  bottom: 11.1111%;  /* 140 / 1080 */
-
-  transform: translateX(-50%);
-
-  font-family: var(--font);
-  font-weight: 800; /* Fustat ExtraBold */
-
-  /* 90px @ 1920 */
-  font-size: min(90px, 4.6875cqw);
-
-  letter-spacing: -0.02em;
-  line-height: 1;
-
-  color: #ffffff;
-
-  text-align: center;
-  white-space: nowrap;
-}
-
-/* ── Portfolio Slots ── */
-#portfolio {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background: #000000;
-}
-
-.portfolio-slot {
-  position: relative;
-
-  width: 100%;
-  max-width: 1920px;
-  aspect-ratio: 16 / 9;
-
-  margin: 0 auto;
-  container-type: inline-size;
-
-  background: #0a0a0a;
-  overflow: hidden;
-  line-height: 0;
-
-  container-type: inline-size;
-}
-
-.portfolio-slot + .portfolio-slot {
-  margin-top: -1px;
-}
-
-.portfolio-slot img,
-.portfolio-slot video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-
-/* fade in when image loads */
-.portfolio-slot img {
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.portfolio-slot img.loaded {
-  opacity: 1;
-}
-
-/* Upload zone */
-.upload-zone {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.panel-about .panel-content{ height: 102px; padding: 22px 38px; }
+.panel-education .panel-content{ height: 201px; }
+.panel-career .panel-content{ height: 198px; }
+.contact-list, .record-list{ width: 100%; }
+.contact-list > div, .record-list > div{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
   gap: 12px;
-  border: 1px dashed rgba(255,255,255,0.1);
-  cursor: pointer;
-  transition: background 0.2s;
+  font-family: var(--font-ko);
+  font-size: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.72px;
+  white-space: nowrap;
 }
+.contact-list > div + div, .record-list > div + div{ margin-top: 11px; }
+.contact-list dt{
+  font-weight: 300;
+  text-transform: uppercase;
+}
+.contact-list dd{ font-weight: 400; }
+.contact-list dd a{ text-decoration: none; }
+.contact-list dd a:hover{ text-decoration: underline; }
+.record-list dt{ font-weight: 400; }
+.record-list dd{ font-weight: 300; }
 
-.upload-zone:hover,
-.upload-zone.dragover { background: rgba(255,255,255,0.03); }
-
-.upload-zone.hidden { display: none; }
-
-.upload-zone input[type="file"] {
+/* ---------------------- PAGE 03 ------------------------- */
+.page-three .stage{ overflow: hidden; }
+.category-reel{
   position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  font-size: 0;
-}
-
-.upload-icon { width: 32px; height: 32px; opacity: 0.15; }
-
-.upload-label {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  opacity: 0.25;
-  font-family: var(--font);
-}
-
-.slot-num {
-  position: absolute;
-  top: 12px;
-  left: 16px;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  opacity: 0.1;
+  left: 100px;
+  top: 434px;
+  width: 1250px;
+  height: 813px;
+  overflow: visible;
   pointer-events: none;
-  z-index: 2;
-  font-family: var(--font);
 }
-
-/* ── Page 17: YouTube Video ── */
-.youtube-page {
+.category-reel-track{
   position: relative;
-  background: #FF7B23;
-}
-
-.youtube-video-wrap {
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70.7291667%;
-  aspect-ratio: 1358 / 764;
-  background: #000000;
-  overflow: hidden;
-  line-height: 0;
-}
-
-.youtube-video-wrap iframe {
-  display: block;
   width: 100%;
   height: 100%;
-  border: 0;
+  will-change: transform;
 }
+.reel-word{
+  position: absolute;
+  left: 0;
+  display: block;
+  font: 700 208.93px/1.1 var(--font-latin);
+  letter-spacing: -6.2679px;
+  white-space: nowrap;
+  text-transform: lowercase;
+}
+.reel-content-1{ top: 0; opacity: 1; }
+.reel-campaign{ top: 226px; opacity: 0.05; }
+.reel-branding{ top: 441px; opacity: 0.02; }
+.reel-content-2{ top: 667px; opacity: 0.01; }
 
-/* ── Closing Page ── */
-/* Figma canvas: 1920 × 1000 */
-
-.closing-page {
-  position: relative;
-
-  width: 100%;
-  max-width: 1920px;
-  aspect-ratio: 1920 / 1000;
-
-  margin: 0 auto;
-
-  background: #000000;
-  color: #ffffff;
-
+.category-preview{
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.preview-image-stack{
+  position: absolute;
+  left: 1524px;
+  top: 407px;
+  width: 200px;
+  height: 200px;
   overflow: hidden;
-
-  font-family: var(--font);
-  container-type: inline-size;
+  background: linear-gradient(140deg, #e3f5ec, #e2eeeb);
 }
-
-
-/* =========================
-   LEFT TOP
-========================= */
-
-.closing-left {
-  position: absolute;
-  left: 10.4167%;   /* 200px */
-  top: 16%;         /* 160 / 1000 */
-}
-
-.closing-title {
-  font-family: var(--font);
-  font-weight: 700; /* Fustat Bold */
-
-  font-size: min(70px, 3.645833cqw);
-  line-height: 1;
-  letter-spacing: -0.02em;
-
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-.closing-body {
-  margin-top: 67px;
-
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 300;
-
-  font-size: min(20px, 1.041667cqw);
-  line-height: 1.7;
-  letter-spacing: 0;
-
-  color: #ffffff;
-  text-align: left;
-  white-space: nowrap;
-}
-
-
-/* =========================
-   RIGHT BOTTOM
-========================= */
-
-.closing-right {
-  position: absolute;
-  right: 10.4167%;  /* 200px */
-  bottom: 12%;      /* 120 / 1000 */
-  text-align: right;
-}
-
-.closing-name-ko {
-  font-family: 'Pretendard', sans-serif;
-  font-weight: 600;
-
-  font-size: min(31px, 1.614583cqw);
-  line-height: 1;
-
-  color: #ffffff;
-
-  margin-bottom: 28px;
-}
-
-.closing-email {
-  font-family: var(--font);
-  font-weight: 200;
-
-  font-size: min(25px, 1.302083cqw);
-  line-height: 1;
-
-  color: #ffffff;
-
-  margin-bottom: 24px;
-}
-
-.closing-phone {
-  font-family: var(--font);
-  font-weight: 200;
-
-  font-size: min(25px, 1.302083cqw);
-  line-height: 1;
-
-  color: #ffffff;
-}
-
-/* ── Footer ── */
-.footer {
-  background: #676057;
-  color: var(--white);
-  padding: 24px var(--col-margin);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  opacity: 0.3;
-  text-align: center;
-  border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-/* ── Responsive ── */
-@media (max-width: 600px) {
-  .hero-corner.mid-left,
-  .hero-corner.mid-right { display: none; }
-}
-
-/* ── Page 02: Project Index ── */
-
-.portfolio-slot {
-  scroll-margin-top: var(--nav-h);
-}
-
-.project-index-page {
-  position: relative;
-  background: #000000;
-}
-
-.project-index-bg {
-  display: none;
-}
-
-.project-index-bg {
+.preview-image{
   position: absolute;
   inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  opacity: 1 !important;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.page02-project-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  font-family: var(--font);
-  line-height: normal;
-  pointer-events: none;
-}
-
-/* ── Page 02 Top Texts ── */
-
-/* 좌우 상단 작은 타이포
-   page-01 작은 타이포와 동일한 기준:
-   Fustat Medium / 14px / 좌우 200px 여백 */
-.page02-kicker {
-  position: absolute;
-  top: 10%;                /* page-01 상단 작은 타이포와 비슷한 높이 */
-  font-family: var(--font);
-  font-weight: 500;        /* Fustat Medium */
-  font-size: min(14px, 0.729167cqw);
-  line-height: 1.3;
-  letter-spacing: 0;
-  color: #ffffff;
-  z-index: 6;
-  white-space: nowrap;
-}
-
-.page02-kicker-left {
-  left: 10.4167%;          /* 200 / 1920 */
-  text-align: left;
-}
-
-.page02-kicker-right {
-  right: 10.4167%;         /* 200 / 1920 */
-  text-align: right;
-}
-
-
-/* 중앙 메인 문구 */
-.page02-headline {
-  position: absolute;
-  left: 50%;
-  top: 8.2%;
-  transform: translateX(-50%);
-
-  font-family: 'Pretendard', var(--font), sans-serif;
-  font-size: min(30px, 1.5625cqw);
-  line-height: 1.35;
-  letter-spacing: 0;
-  color: #ffffff;
-
-  text-align: center;
-  z-index: 6;
-  white-space: nowrap;
-}
-
-.page02-headline .light {
-  font-weight: 300;        /* Pretendard Light */
-}
-
-.page02-headline .semibold {
-  font-weight: 600;        /* Pretendard SemiBold */
-}
-
-
-/* 연락처 */
-.page02-contact {
-  position: absolute;
-  left: 50%;
-  top: 16.1%;
-  transform: translateX(-50%);
-
-  font-family: 'Pretendard', var(--font), sans-serif;
-  font-weight: 300;        /* Pretendard Light */
-  font-size: min(18px, 0.9375cqw);
-  line-height: 1.3;
-  letter-spacing: 0;
-  color: #A3A3A3;
-
-  text-align: center;
-  z-index: 6;
-  white-space: nowrap;
-}
-
-/* 이미지: 192 × 133 / 1920 × 1080 기준 */
-.page02-thumb {
-  position: absolute;
-  top: 69.2593%;      /* y: 748 */
-  width: 10%;     /* 192 / 1920 */
-  height: 12.3148%;   /* 133 / 1080 */
-  display: block;
-  z-index: 2;
-  pointer-events: auto;
-}
-
-.page02-thumb img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block;
-  opacity: 1 !important;
-  transition: opacity 0.2s ease;
-}
-
-.page02-thumb:hover img {
-  opacity: 0.75 !important;
-}
-
-/* 공통 타이포 */
-.page02-text {
-  position: absolute;
-  display: block;
-  font-family: var(--font);
-
-  font-size: min(14px, 0.729167cqw);
-
-  line-height: 1.3;
-  letter-spacing: 0;
-  white-space: nowrap;
-
-  text-align: center;
-
-  z-index: 3;
-  pointer-events: none;
-}
-
-/* 번호 */
-.page02-num {
-  color: #ffffff;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   opacity: 0;
+}
+.preview-one{ opacity: 1; }
+.asset-placeholder{
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+}
+.preview-paren{
+  position: absolute;
+  top: 448px;
+  font: 700 100px/1.2 var(--font-latin);
+}
+.preview-paren-left{ left: 1421px; }
+.preview-paren-right{ left: 1777px; }
+
+/* Actual Figma motion (4-second infinitely looping timeline).
+   Start timings are preserved from the design's keyframe tracks. */
+.page-three.is-in-view .category-reel-track{
+  animation: reel-move 4s linear infinite;
+}
+.page-three.is-in-view .reel-content-1{ animation: reel-opacity-content-1 4s linear infinite; }
+.page-three.is-in-view .reel-campaign{ animation: reel-opacity-campaign 4s linear infinite; }
+.page-three.is-in-view .reel-branding{ animation: reel-opacity-branding 4s linear infinite; }
+.page-three.is-in-view .reel-content-2{ animation: reel-opacity-content-2 4s linear infinite; }
+.page-three.is-in-view .preview-one{ animation: preview-opacity-1 4s linear infinite; }
+.page-three.is-in-view .preview-two{ animation: preview-opacity-2 4s linear infinite; }
+.page-three.is-in-view .preview-three{ animation: preview-opacity-3 4s linear infinite; }
+
+@keyframes reel-move {
+  0%, 8.75% { transform: translateY(0); }
+  18.75%, 27.5% { transform: translateY(-226px); }
+  37.5%, 46.25% { transform: translateY(-441px); }
+  56.25%, 100% { transform: translateY(-667px); }
+}
+@keyframes reel-opacity-content-1 {
+  0%, 8.75% { opacity: 1; }
+  18.75%, 27.5% { opacity: .05; }
+  37.5%, 46.25% { opacity: .02; }
+  56.25%, 100% { opacity: 0; }
+}
+@keyframes reel-opacity-campaign {
+  0%, 8.75% { opacity: .05; }
+  18.75%, 27.5% { opacity: 1; }
+  37.5%, 46.25% { opacity: .05; }
+  56.25%, 100% { opacity: .02; }
+}
+@keyframes reel-opacity-branding {
+  0%, 8.75% { opacity: .02; }
+  18.75%, 27.5% { opacity: .05; }
+  37.5%, 46.25% { opacity: 1; }
+  56.25%, 100% { opacity: .05; }
+}
+@keyframes reel-opacity-content-2 {
+  0%, 8.75% { opacity: .01; }
+  18.75%, 27.5% { opacity: .02; }
+  37.5%, 46.25% { opacity: .05; }
+  56.25%, 100% { opacity: 1; }
+}
+@keyframes preview-opacity-1 {
+  0%, 31.25% { opacity: 1; }
+  33.25%, 98% { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes preview-opacity-2 {
+  0%, 31.25% { opacity: 0; }
+  33.25%, 64.5% { opacity: 1; }
+  66.5%, 100% { opacity: 0; }
+}
+@keyframes preview-opacity-3 {
+  0%, 64.5% { opacity: 0; }
+  66.5%, 98% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Figma motion is preserved, but users who request less animation can
+   inspect the page comfortably with static content. */
+@media (prefers-reduced-motion: reduce) {
+  html{ scroll-behavior: auto; }
+  .page-three.is-in-view .category-reel-track, .page-three.is-in-view .reel-word, .page-three.is-in-view .preview-image{
+    animation: none !important;
+  }
+  .panel-content{ transition: none; }
+}
+
+/* Every viewport width now uses the original 1920px Figma composition.
+   Mobile-specific reflow rules were removed intentionally so page-01~03
+   follow the exact same proportional scaling as page-04~83. */
+
+.preview-image.is-missing{ display: none; }
+
+
+/* ===== 기존 work-pages.css / 병합 시작 ===== */
+/* iM BANK — page-04~16 / based on the user's Figma 1920×1080 frames. */
+.work-page .stage{background:#fefefe; overflow:hidden;}
+.work-page .figma-image{display:block;width:100%;height:100%;object-fit:contain;}
+.work-page img.figma-image:not([src]){visibility:hidden;}
+.work-page img.figma-image.is-missing{visibility:hidden;}
+.work-page .work-description{position:absolute;left:100px;top:100px;display:grid;grid-template-columns:660px 1fr;gap:40px;align-items:start;width:1720px;z-index:4;font-family:var(--font-ko);color:#1d1d1d;}
+.work-page .work-description h2{font-size:20px;line-height:1.25;font-weight:650;letter-spacing:-.4px;text-transform:uppercase;}
+.work-page .work-description p{font-size:16px;line-height:1.7;font-weight:400;letter-spacing:-.64px;color:#3e3e3e;max-width:1000px;}
+
+/* 04 — introductory iM Bank cover */
+.page-28 .stage{background:linear-gradient(180deg,#26cdb2 0%,#a3eade 54.327%,#ecfbf8 100%);color:#1d1d1d;}
+.p04-symbols{position:absolute;inset:0;pointer-events:none;}
+.p04-symbols img{position:absolute;max-width:none;}
+.p04-ellipse{width:2075px!important;height:1889px!important;left:910px;top:-665px;opacity:.42;}
+.p04-arch{width:485px!important;height:485px!important;left:1124px;top:596px;opacity:.67;}
+.p04-v1{width:170px!important;height:312px!important;left:953px;top:768px;opacity:.67;}
+.p04-v2{width:484px!important;height:484px!important;left:1436px;top:596px;opacity:.67;}
+.p04-header{position:absolute;left:100px;right:100px;top:100px;display:grid;grid-template-columns:1050px 195px 203px 1fr;gap:0;font-family:var(--font-ko);}
+.work-project-title, .p04-meta{display:flex;flex-direction:column;align-items:flex-start;gap:12px;line-height:1.25;}
+.work-project-title span{font-size:20px;font-weight:650;letter-spacing:-.4px;}
+.work-project-title b{font-size:25px;font-weight:700;letter-spacing:-.5px;}
+.p04-meta strong{font-size:18px;font-weight:650;}
+.p04-meta span{font-size:16px;letter-spacing:-.32px;font-weight:300;line-height:1.2;}
+.p04-award{position:absolute;width:78px!important;height:127px!important;right:100px;top:0;object-fit:contain!important;z-index:3;}
+
+/* 05 — project overview: moving bank challenges and circles */
+.page-29 .stage{background:#fefefe;}
+.p05-description{grid-template-columns:660px 1fr!important;}
+.p05-ticker-wrap{position:absolute;left:0;top:535px;width:1920px;height:120px;overflow:hidden;}
+.p05-ticker{position:absolute;left:0;top:0;display:flex;align-items:center;gap:84px;width:max-content;animation:p05-marquee 8s ease-in-out infinite;}
+.p05-ticker span{font:500 35px/1.6 var(--font-ko);letter-spacing:-1.4px;color:#bcccc9;text-align:center;min-width:220px;}
+@keyframes p05-marquee {to{transform:translateX(-2020px);}}
+.p05-circle{position:absolute;top:405px;width:345px;height:345px;border:1px solid #00a57b;border-radius:50%;z-index:3;display:flex;align-items:center;flex-direction:column;justify-content:center;text-align:center;gap:34px;color:#007a5f;font-family:var(--font-ko);background:rgba(254,254,254,.95);}
+.p05-circle>span{font-size:18px;color:#009d70;text-transform:uppercase;letter-spacing:-.7px;}
+.p05-circle strong{font-size:25px;letter-spacing:-1px;line-height:1.4;font-weight:650;}
+.p05-goods{left:467px;}
+.p05-content{left:1110px;}
+.p05-center{left:773px;top:393px;width:373px;height:373px;border:0;background:#009d70;color:#fff;box-shadow:0 0 55px rgba(0,157,112,.18);z-index:4;}
+.p05-center>span{color:#fff;}
+.p05-center strong{font-size:28px;color:white;font-weight:400;}
+.p05-center strong b{font-weight:800;}
+
+/* 06 — brand asset lineup */
+.page-30 .stage{background:white;}
+.p06-main-outline{position:absolute;left:176px;top:364px;width:466px;height:466px;}
+.p06-main-outline>img:first-child{position:absolute;inset:0;}
+.p06-main-outline>img.p06-main-asset{position:absolute;width:388.9px;height:384.8px;left:39px;top:40px;object-fit:contain;}
+.p06-icon{position:absolute;text-align:center;font:400 20px/1.3 var(--font-ko);color:#030303;white-space:nowrap;}
+.p06-icon-img{display:flex;align-items:center;justify-content:center;}
+.p06-icon-img img{max-width:100%;max-height:100%;}
+.p06-icon>span{display:block;margin-top:19px;}
+
+/* 07 — full-screen 3D character artwork */
+.page-31 .stage{background:linear-gradient(180deg,#dfefec,#fefefe);}
+.p07-art{position:absolute;inset:0;overflow:hidden;}
+.p07-art img{width:100%;height:100%;object-fit:cover;object-position:center center;}
+
+/* 08 — three-character IP introduction */
+.page-32 .stage{background:#fefefe;}
+.p08-watermark{position:absolute;top:457px;left:260px;white-space:nowrap;font:700 152px/1 var(--font-latin);color:#009d70;opacity:.085;letter-spacing:-6px;}
+.p08-character{position:absolute;top:335px;width:400px;text-align:center;font-family:var(--font-ko);}
+.p08-character>.character-figure{width:400px;height:400px;object-fit:contain;}
+.p08-character h3{margin-top:-2px;font:700 45px/1.1 "Grandstander",var(--font-latin);letter-spacing:-1px;}
+.p08-character.blue{--accent:#67b0fe;--accent-dark:#00448c;}
+.p08-character.cyan{--accent:#0fc0ef;--accent-dark:#004972;}
+.p08-character.green{--accent:#4ac34e;--accent-dark:#00301d;}
+.p08-character.blue h3{color:#436ce8;text-shadow:1px 3px #a1ceff;}
+.p08-character.cyan h3{color:#09cbff;text-shadow:1px 3px #acedff;}
+.p08-character.green h3{color:#46bf4a;text-shadow:1px 3px #85f089;}
+.p08-chips{display:flex;flex-direction:column;gap:12px;align-items:center;margin-top:35px;font:500 19px/1.3 var(--font-ko);}
+.p08-chips-solid, .p08-chips-outline{display:flex;gap:8px;justify-content:center;}
+.p08-chips span{padding:7px 17px;border-radius:60px;white-space:nowrap;}
+.p08-chips-solid span{background:var(--accent);color:var(--accent-dark);}
+.p08-chips-outline span{border:1px solid var(--accent);color:var(--accent);}
+
+/* 09 — 3D character/town objects */
+.page-33 .stage{background:#fefefe;}
+.p09-badge{position:absolute;left:250px;background:#009d70;color:#fff;font:700 16px/1.25 var(--font-latin);padding:7px 17px;border-radius:30px;z-index:3;}
+.p09-badge-1{top:188px;}.p09-badge-2{top:458px;}
+.p09-item{position:absolute;}
+.p09-item>img{object-fit:contain;}
+
+/* 10 — alternating original 12-image character design boards */
+.page-34 .stage{background:#fefefe;}
+.p10-gallery{position:absolute;left:212px;top:219px;width:1494px;height:644px;}
+.p10-slide{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,363px);grid-template-rows:repeat(3,204px);gap:16px 14px;}
+.p10-tile{position:relative;overflow:hidden;background:#fff;box-shadow:1px 2px 4px rgba(0,0,0,.25);} 
+.p10-tile>img{object-fit:cover;}
+.p10-slide-1{opacity:1;animation:p10-first 6s linear infinite;}
+.p10-slide-2{opacity:0;animation:p10-second 6s linear infinite;}
+@keyframes p10-first{0%,35.333%{opacity:1;}37.667%,71%{opacity:0;}73.333%,100%{opacity:1;}}
+@keyframes p10-second{0%,35.333%{opacity:0;}37.667%,71%{opacity:1;}73.333%,100%{opacity:0;}}
+
+/* 11 — iM Town world map artwork */
+.page-35 .stage{background:white;}
+.p11-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover!important;}
+
+/* 12 — SNS content / floating phone mockups */
+.page-36 .stage{background:#f8fffe;}
+.p12-glow{position:absolute;width:2100px;height:1420px;border-radius:50%;left:220px;top:0;background:radial-gradient(ellipse at center,rgba(190,245,220,.65),rgba(248,255,254,0) 67%);transform:rotate(-9deg);}
+.p12-label{position:absolute;left:100px;top:100px;font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;z-index:5;}
+.p12-desc{position:absolute;top:236px;left:100px;width:484px;font:400 16px/1.7 var(--font-ko);letter-spacing:-.64px;color:#3e3e3e;z-index:5;}
+.p12-phone{position:absolute;width:510px;height:1030px;overflow:visible;filter:drop-shadow(15px 15px 20px rgba(0,0,0,.15));transform-origin:center;}
+.p12-phone-screen{position:absolute;left:15px;top:24px;width:480px!important;height:982px!important;object-fit:cover!important;border-radius:55px;}
+.p12-phone-frame{position:absolute;inset:0;object-fit:contain!important;}
+
+/* 13 — channel-content guideline: align all parts to the Figma 1920×1080 coordinates. */
+.page-37 .stage{background:#f8fffe;}
+/* Top banner: x=200 y=125, mint panel 1519×169 and title block 242×169. */
+.p13-guideline{position:absolute;left:200px;top:125px;width:1519px;height:169px;border-radius:30px;background:#d1efe0;overflow:hidden;font-family:var(--font-ko);z-index:2;}
+.p13-guideline-heading{position:absolute;left:0;top:0;width:242px;height:169px;background:#59bbaa;display:flex;align-items:center;justify-content:center;text-align:center;color:white;font:600 20px/1.25 var(--font-ko);letter-spacing:-.6px;}
+.p13-guideline ul{list-style:none;margin:0;padding:0;position:absolute;inset:0;font:400 16px/1.35 var(--font-ko);letter-spacing:-.48px;}
+.p13-guideline li{position:absolute;display:flex;align-items:center;gap:9px;height:29px;white-space:nowrap;color:#111;}
+.p13-guideline li:nth-child(1){left:315px;top:40px;}
+.p13-guideline li:nth-child(2){left:610px;top:40px;}
+.p13-guideline li:nth-child(3){left:1019px;top:40px;}
+.p13-guideline li:nth-child(4){left:315px;top:100px;}
+.p13-guideline li:nth-child(5){left:610px;top:100px;}
+.p13-guideline li::before{content:"✓";flex:none;display:flex;align-items:center;justify-content:center;width:28.33px;height:28.33px;background:#fff;border-radius:50%;color:#59bbaa;font:600 17px/1 var(--font-ko);}
+/* Four 1px connector lines (original Figma x/y: 380/766/1152/1538, y=294). */
+.p13-connector{position:absolute;top:294px;width:1px;height:91px;background:#59bbaa;z-index:1;pointer-events:none;}
+.p13-connector-1{left:380px;}.p13-connector-2{left:766px;}.p13-connector-3{left:1152px;}.p13-connector-4{left:1538px;background:#ffb20f;}
+.p13-card{position:absolute;top:368px;width:361.75px;height:588px;border-radius:30px;background:#fff;box-shadow:0 4px 6px rgba(0,0,0,.25);font-family:var(--font-ko);text-align:center;padding:0;z-index:2;}
+/* Chip: top=381, h=36; widths follow original Figma instances. */
+.p13-card-chip{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:165px;height:36px;padding:0;border-radius:30px;background:#59bbaa;color:#fff;font:500 18px/36px var(--font-ko);letter-spacing:-.72px;white-space:nowrap;text-align:center;}
+.p13-card:nth-of-type(3) .p13-card-chip{width:199px;}
+.p13-card:nth-of-type(4) .p13-card-chip{width:182px;}
+.p13-card-chip.orange{background:#ffb20f;}
+/* Subheadings all start at page y=452; no margin-driven vertical drift. */
+.p13-card-subtitle{position:absolute;top:84px;left:0;width:100%;height:24px;margin:0;font:500 18px/24px var(--font-ko);letter-spacing:-.72px;white-space:nowrap;text-align:center;}
+/* Raster slots begin at page y=488. Third is a portrait aspect ratio. */
+.p13-card-img{position:absolute;top:120px;left:23px;width:316px;height:316px;margin:0;overflow:hidden;}
+.p13-card-img img{width:100%;height:100%;object-fit:fill!important;}
+.p13-card:nth-of-type(3) .p13-card-img{left:54px;width:252.9px;height:316.125px;}
+.p13-card-list{position:absolute;top:474px;left:48px;width:285px;text-align:left;margin:0;}
+.p13-card:nth-of-type(3) .p13-card-list{left:53px;}
+.p13-card:nth-of-type(4) .p13-card-list{left:44px;}
+.p13-card-list p{display:flex;align-items:baseline;gap:10px;margin:0 0 8px;font:400 16px/21px var(--font-ko);letter-spacing:-.64px;white-space:nowrap;}
+.p13-card-list i{font-style:normal;flex:none;color:#00a878;font-weight:700;margin:0;}
+
+/* 14 — SNS carousel: one completely opaque 580×580 card at the original position. */
+.page-38 .stage{background:linear-gradient(180deg,#f8fffe,#f9f9f9);}
+.p14-right-bg{position:absolute;right:0;top:0;width:982px;height:1080px;background:#d1efe0;}
+/* Original Figma phone is x=179, y=229, w=585, h=851. */
+.p14-phone{position:absolute;left:179px;top:229px;width:585px;height:851px;overflow:hidden;z-index:2;}
+.p14-phone img{width:100%;height:100%;object-fit:fill!important;}
+.p14-cards{position:absolute;top:255px;left:1139px;width:580.4px;height:580.4px;}
+.p14-social-card{position:absolute;inset:0;border-radius:30px;overflow:hidden;opacity:0;visibility:hidden;transform:translateY(12px);transition:opacity .28s ease-out,transform .28s ease-out;z-index:1;pointer-events:none;}
+.p14-social-card.is-active{opacity:1;visibility:visible;transform:translateY(0);z-index:2;}
+.p14-social-card img{display:block;width:100%;height:100%;object-fit:cover!important;}
+
+/* 15 — application: solid mint circle + a separate bottom rectangular fade. */
+.page-39 .stage{background:#f9f9f9;}
+/* Original Figma: Ellipse 1918, x=125, y=675, w=1674, h=1376. */
+.p15-backdrop{position:absolute;left:125px;top:675px;width:1674px;height:1376px;border-radius:50%;background:#baf3d5;pointer-events:none;z-index:0;}
+/* Original Figma: Rectangle 161124266, x=0, y=826, w=1920, h=254. */
+.p15-gradient-overlay{position:absolute;left:0;top:826px;width:1920px;height:254px;background:linear-gradient(to bottom,rgba(249,249,249,0),#f9f9f9);pointer-events:none;z-index:1;}
+.p15-label{position:absolute;left:100px;top:100px;font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;z-index:3;}
+/* Figma's phone image is not positioned at the previous 750,110 coordinates. */
+.p15-app-mockup{position:absolute;left:753px;top:173px;width:413.5px;height:798px;z-index:3;}
+.p15-app-mockup img{width:100%;height:100%;object-fit:fill!important;}
+.p15-gallery{position:static;}
+.p15-image{position:absolute;border-radius:20px;overflow:hidden;z-index:3;}
+.p15-image img{width:100%;height:100%;object-fit:cover!important;}
+.p15-left{left:1px;top:454px;width:280px;height:566px;box-shadow:0 3.62px 9.66px rgba(0,0,0,.15);}
+.p15-leftmid{left:313.5px;top:454px;width:363.03px;height:566.3px;box-shadow:0 2.69px 7.16px rgba(0,0,0,.15);}
+.p15-rightmid{left:1226px;top:257px;width:215px;height:256px;box-shadow:0 3.62px 9.66px rgba(0,0,0,.15);}
+.p15-right{left:1463px;top:257px;width:672.77px;height:256px;box-shadow:0 3.62px 9.66px rgba(0,0,0,.15);}
+.p15-description{position:absolute;left:1229px;top:561px;width:490px;color:#3e3e3e;font:400 16px/1.7 var(--font-ko);letter-spacing:-.64px;z-index:3;}
+
+/* 16 — four print/goods mockups with the Figma crop geometry. */
+.page-40 .stage{background:#f9f9f9;}
+.p16-board{position:absolute;border-radius:20px;overflow:hidden;background:#fff;}
+.p16-board img{object-fit:cover;}
+.p16-main{left:173px;top:101px;width:708.4px;height:878px;}
+.p16-upper{left:906px;top:101px;width:842.3px;height:442.1px;}
+.p16-bottom-left{left:905px;top:567px;width:366px;height:412px;}
+.p16-bottom-right{left:1295px;top:567px;width:452.8px;height:412.4px;}
+/* The three goods images are different crop windows on the same Figma image fill. */
+.p16-upper img{width:186.11%!important;height:200%!important;max-width:none;transform:translate(-1.34%,-50%);}
+.p16-bottom-left img{width:400.38%!important;height:200.07%!important;max-width:none;transform:translate(0,0);}
+.p16-bottom-right img{width:324.56%!important;height:200.42%!important;max-width:none;transform:translate(-25%,0);}
+.p16-main img{width:220.18%!important;height:100%!important;max-width:none;transform:translateX(-4.93%);}
+
+@media(prefers-reduced-motion:reduce){
+  .page-29 .p05-ticker, .page-34 .p10-slide, .page-38 .p14-social-card{animation:none!important;}
+  .page-34 .p10-slide-2{opacity:0;}
+  .page-38 .p14-social-card{transition:none!important;}
+  .page-38 .p14-social-card:not(.is-active){opacity:0;visibility:hidden;}
+  .page-38 .p14-social-card.is-active{opacity:1;visibility:visible;transform:none;}
+}
+
+/* Real source assets are fetched by the supplied Windows asset downloader. */
+.work-page .p05-ticker, .work-page .p10-slide{animation-play-state:paused;}
+.work-page.is-in-view .p05-ticker, .work-page.is-in-view .p10-slide{animation-play-state:running;}
+/* Preserve Figma's decorative SVG clip and ring assets when installed. */
+.p04-symbols .p04-arch{-webkit-mask-image:url("./assets/project01/image/p04-imgGroup.svg");mask-image:url("./assets/project01/image/p04-imgGroup.svg");-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;}
+.p05-goods, .p05-content{background-image:url("./assets/project01/image/p05-imgEllipse1806.svg");background-size:100% 100%;background-repeat:no-repeat;}
+.p05-center{background-image:url("./assets/project01/image/p05-imgEllipse1805.svg");background-size:100% 100%;background-repeat:no-repeat;}
+.preview-image.is-missing{visibility:hidden;}
+
+
+/* ===== 기존 project-pages.css / 병합 시작 ===== */
+/* Additional Figma layouts page-17 through page-33, reference canvas 1920x1080.
+   All values are local to each .stage; no change to page-01~16 styling. */
+.project-extra .stage{background:#fff;overflow:hidden;font-family:var(--font-ko);}
+.project-extra .figma-image{display:block;width:100%;height:100%;object-fit:contain;}
+.project-extra .figma-image.is-missing{visibility:hidden;}
+.project-extra p, .project-extra h2, .project-extra h3{margin:0;}
+.project-extra .cover-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* Project mastheads: precise common top alignment from Figma. */
+.project-cover-overlay{position:absolute;inset:0 0 auto;height:474px;background:linear-gradient(to bottom,rgba(0,0,0,.88),transparent);pointer-events:none;}
+.project-cover-heading{position:absolute;top:100px;left:100px;display:flex;flex-direction:column;gap:8px;color:#fff;line-height:1.25;white-space:nowrap;}
+.project-cover-heading span{font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;}
+.project-cover-heading strong{font:700 25px/1.25 var(--font-ko);letter-spacing:-.5px;text-transform:uppercase;}
+.project-cover-details{position:absolute;top:100px;left:1188px;display:grid;grid-template-columns:225px 230px 184px;color:#fff;}
+.project-cover-details>div{display:flex;flex-direction:column;gap:14px;}
+.project-cover-details b{font:600 18px/1.25 var(--font-ko);}
+.project-cover-details span{font:400 16px/1.2 var(--font-ko);letter-spacing:-.32px;}
+.project-cover-award{position:absolute;width:78px!important;height:127px!important;right:100px;top:0;object-fit:contain!important;}
+.page-41 .stage{background:linear-gradient(#ff7556,#f94216);}
+
+/* LOTTE — 18, project overview */
+.page-42 .stage{background:#000;color:#fff;}
+.lot-overview-heading h2, .lot-overview-heading p{color:#fff!important;}
+.lot-overview-col{position:absolute;top:323px;width:287px;text-align:center;color:#fff;}
+.lot-num{display:inline-flex;align-items:center;justify-content:center;background:#ba1a31;color:#ffe9e9;border-radius:99px;min-width:58px;height:27px;font:500 20px/1.3 var(--font-ko);}
+.lot-asis{margin-top:27px!important;height:98px;line-height:1.5;font-size:20px;font-weight:600;}
+.lot-asis em{font-style:normal;font-weight:800;color:#e84050;}
+.lot-down{height:70px;color:#fff;font:300 65px/1 var(--font-ko);}
+.lot-outcome{border:1px solid #ba1a31;width:287px;height:287px;border-radius:50%;background:radial-gradient(ellipse at center,#393334 0%,#171314 75%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:25px;}
+.lot-outcome b{font-size:23px;font-weight:650;line-height:1.5;}
+.lot-outcome b em{font-style:normal;color:#e84050;}
+.lot-outcome span{font-size:18px;line-height:1.5;white-space:nowrap;}
+.lot-as-is, .lot-to-be{position:absolute;left:299px;width:91px;height:38px;border-radius:87px;display:flex;align-items:center;justify-content:center;font:500 20px/1 var(--font-ko);text-transform:uppercase;}
+.lot-as-is{top:375px;color:#ba1a31;border:1px solid #ba1a31;}
+.lot-to-be{top:684px;color:#ba1a31;background:#ffe9e9;}
+/* 19 — red horizon, 4 icon transitions from Figma 4-second original timeline. */
+.page-43 .stage{background:#000;color:#fff;}
+.lot-red-horizon{position:absolute;width:2278px;height:1629px;left:50%;top:850px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(ellipse at 50% 5%,#b81731 0%,#550b19 38%,#140007 60%,#000 70%);}
+.lot-creative-title{position:absolute;top:100px;left:0;width:100%;text-align:center;z-index:3;}
+.lot-creative-title span{font:700 20px/1.25 var(--font-ko);letter-spacing:-.4px;color:#f05656;}
+.lot-creative-title h2{margin-top:62px;font:650 35px/1.4 var(--font-ko);letter-spacing:-.7px;}
+.lot-direction-item{position:absolute;z-index:3;}
+.lot-direction-item img{width:100%;height:100%;object-fit:contain;}
+.lot-direction-item>.lot-normal{position:absolute;inset:0;}
+.lot-direction-item .lot-second{position:absolute;inset:0;opacity:0;overflow:hidden;}
+.lot-direction-item .lot-second img{position:absolute;max-width:none;object-fit:fill;}
+.lot-dir-travel .lot-second img{height:542.71%;width:1043.48%;left:-638.04%;top:-167.34%;}
+.lot-dir-personal .lot-second img{height:1113.4%;width:738.46%;left:-570.66%;top:-392.78%;}
+.lot-dir-business .lot-second img{height:463.52%;width:655.29%;left:-382.59%;top:-279.83%;}
+.lot-dir-management .lot-second img{height:524.27%;width:693.14%;left:-532.49%;top:-319.9%;}
+.lot-direction-label{position:absolute;top:722px;transform:translateX(-50%);font:500 20px/1.7 var(--font-ko);z-index:4;}
+.page-43.is-in-view .lot-dir-travel>.lot-normal{animation:dir19-normal1 4s linear infinite;}.page-43.is-in-view .lot-dir-travel .lot-second{animation:dir19-alt1 4s linear infinite;}
+.page-43.is-in-view .lot-dir-personal>.lot-normal{animation:dir19-normal2 4s linear infinite;}.page-43.is-in-view .lot-dir-personal .lot-second{animation:dir19-alt2 4s linear infinite;}
+.page-43.is-in-view .lot-dir-business>.lot-normal{animation:dir19-normal3 4s linear infinite;}.page-43.is-in-view .lot-dir-business .lot-second{animation:dir19-alt3 4s linear infinite;}
+.page-43.is-in-view .lot-dir-management>.lot-normal{animation:dir19-normal4 4s linear infinite;}.page-43.is-in-view .lot-dir-management .lot-second{animation:dir19-alt4 4s linear infinite;}
+@keyframes dir19-normal1{0%,11.5%{opacity:1}18.75%,100%{opacity:0}}
+@keyframes dir19-normal2{0%,29.75%{opacity:1}37%,100%{opacity:0}}
+@keyframes dir19-normal3{0%,48%{opacity:1}55.25%,100%{opacity:0}}
+@keyframes dir19-normal4{0%,66.25%{opacity:1}73.5%,100%{opacity:0}}
+@keyframes dir19-alt1{0%,11.5%{opacity:0}18.75%,100%{opacity:1}}
+@keyframes dir19-alt2{0%,29.75%{opacity:0}37%,100%{opacity:1}}
+@keyframes dir19-alt3{0%,48%{opacity:0}55.25%,100%{opacity:1}}
+@keyframes dir19-alt4{0%,66.25%{opacity:0}73.5%,100%{opacity:1}}
+/* 20 — circular wipe transition over three original graphics. */
+.page-44 .stage{background:#000;}
+.lot-message-stack{position:absolute;left:90px;top:146px;width:1740px;height:787px;overflow:hidden;}
+.lot-message{position:absolute;inset:0;}
+.lot-message img{width:100%;height:100%;object-fit:contain;}
+.lot-message-2, .lot-message-3{clip-path:circle(0% at 0% 55%);}
+.page-44.is-in-view .lot-message-2{animation:lot-wipe-2 6s linear infinite;}
+.page-44.is-in-view .lot-message-3{animation:lot-wipe-3 6s linear infinite;}
+@keyframes lot-wipe-2{0%,26.667%{clip-path:circle(0% at 0% 55%)}33.333%,98%{clip-path:circle(160% at 0% 55%)}99.667%,100%{clip-path:circle(0% at 0% 55%)}}
+@keyframes lot-wipe-3{0%,60%{clip-path:circle(0% at 0% 55%)}66.667%,98%{clip-path:circle(160% at 0% 55%)}99.667%,100%{clip-path:circle(0% at 0% 55%)}}
+/* 21 — original full page (asset required). */
+.page-45 .stage{background:#fffdfd;}.page-45 .lot-fullbleed{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+/* 22 — phone / gray studio photography and green placeholder from original Figma. */
+.page-46 .stage{background:linear-gradient(169.636deg,#86898f 10.67%,#e8e8e8 64.09%);}
+.lot-gray-haze{position:absolute;left:-350px;top:-700px;width:2650px;height:2100px;background:radial-gradient(ellipse,#eee 20%,rgba(255,255,255,.65) 47%,transparent 72%);filter:blur(70px);}
+.lot-phone-shadow{position:absolute;left:785px;top:177px;width:353px;height:765px;border:12px solid #101010;border-radius:72px;background:#2f0;box-shadow:5px 6px 16px rgba(0,0,0,.44),inset 0 0 0 6px #555;overflow:hidden;}
+.lot-iphone-body{position:absolute;inset:0;opacity:.4;}
+.lot-chroma-screen{position:absolute;inset:13px 11px;background:#2f0;border-radius:51px;}
+.lot-phone-notch{position:absolute;left:50%;top:21px;transform:translateX(-50%);background:#040404;border-radius:30px;width:114px;height:31px;}
+.lot-large-watermark{position:absolute;bottom:-74px;left:-20px;color:#fff;font:600 220px/1 var(--font-latin);letter-spacing:-22px;white-space:nowrap;opacity:.63;}
+.lot-stencil-left{position:absolute;left:350px;top:493px;color:#a59b9b;text-align:center;font:600 34px/1.8 var(--font-ko);transform:rotate(-5deg);}
+.lot-stencil-left span{display:block;font-size:26px;}.lot-stencil-left b{font-size:52px;}
+.lot-stencil-right{position:absolute;left:1257px;top:350px;transform:rotate(-8deg);color:#a59b9b;text-align:center;font:450 50px/1.3 var(--font-ko);}
+.lot-sns-label{position:absolute;top:100px;left:100px;font:650 20px/1.25 var(--font-ko);}
+.lot-p22-vector{position:absolute;opacity:.12;pointer-events:none;}
+.lot-p22-vector.imgGroup{left:325px;top:485px;width:140px;height:35px;}.lot-p22-vector.imgGroup1{left:370px;top:520px;width:70px;height:45px;}
+.lot-p22-vector.imgGroup2{left:420px;top:535px;width:65px;height:45px;}.lot-p22-vector.imgGroup3{left:415px;top:493px;width:75px;height:55px;}
+.lot-p22-vector.imgGroup4{left:350px;top:490px;width:95px;height:50px;}.lot-p22-vector.imgGroup1597883102{left:1230px;top:315px;width:500px;height:250px;}
+/* 23 — Instagram brand card layouts with original Figma 6sec crossfade. */
+.page-47 .stage{background:#e8e8e8;}
+.project-meta-tag{position:absolute;top:100px;left:100px;border:1px solid #ba1a31;color:#ba1a31;border-radius:87px;font:500 20px/1.25 var(--font-ko);min-width:103px;height:38px;display:flex;justify-content:center;align-items:center;padding:0 16px;z-index:9;}
+.lot-p23-carousel{position:absolute;top:298px;left:169px;width:1582px;height:485px;}
+.lot-p23-slide{position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,373px);column-gap:30px;opacity:0;}
+.lot-p23-slide-1{opacity:1;}
+.lot-instagram-card{height:485px;border-radius:32px;background:#fff;overflow:hidden;box-shadow:0 3px 9px rgba(0,0,0,.2);}
+.lot-card-brand{height:55px;padding:15px 16px;font:500 16px/1 var(--font-ko);color:#111;}
+.lot-red-dot{color:#d71920;}.lot-card-menu{float:right;font-weight:800;}
+.lot-card-picture{width:373px;height:374px;overflow:hidden;background:#eee;}.lot-card-picture img{width:100%;height:100%;object-fit:cover;}
+.lot-card-interactions{height:55px;padding:12px 17px;font:600 28px/1 var(--font-ko);letter-spacing:4px;}.lot-card-interactions span{float:right;}
+.page-47.is-in-view .lot-p23-slide-1{animation:p23-slide1 6s linear infinite;}
+.page-47.is-in-view .lot-p23-slide-2{animation:p23-slide2 6s linear infinite;}
+.page-47.is-in-view .lot-p23-slide-3{animation:p23-slide3 6s linear infinite;}
+@keyframes p23-slide1{0%,31.667%{opacity:1}33.333%,98.333%{opacity:0}100%{opacity:1}}
+@keyframes p23-slide2{0%,31.667%{opacity:0}33.333%,65%{opacity:1}66.667%,100%{opacity:0}}
+@keyframes p23-slide3{0%,65%{opacity:0}66.667%,98.333%{opacity:1}100%{opacity:0}}
+/* 24 — travel mobile feed and six tiles. */
+.page-48 .stage{background:#e8e8e8;}
+.lot-travel-phone{position:absolute;left:210px;top:190px;width:423px;height:917px;border-radius:32px;overflow:hidden;background:#eee;box-shadow:5px 5px 15px rgba(0,0,0,.25);}
+.lot-travel-phone>img:first-child{position:absolute;inset:0;object-fit:contain;}.lot-travel-phone .travel-phone-screen{position:absolute;left:3%;top:21%;width:94%;height:46%;object-fit:cover;}
+.lot-travel-card{position:absolute;width:291px;height:290px;border-radius:20px;background:#fff;overflow:hidden;box-shadow:1px 1px 12px rgba(0,0,0,.15);}
+.lot-travel-card img{width:100%;height:100%;object-fit:cover;}
+/* 25 — two animated strips, 10.8 sec staggered movement (original distances). */
+.page-49 .stage{background:linear-gradient(120deg,#e8e8e8,#fafafa);}
+.lot-lifestyle-row{position:absolute;left:770px;top:181px;display:flex;gap:20px;width:max-content;will-change:transform;}
+.lot-lifestyle-2{left:-450px;top:620px;}
+.lot-ticker-card{width:290px;height:377px;border-radius:25px;overflow:hidden;flex-shrink:0;background:#fff;}
+.lot-ticker-header{height:43px;padding:13px 15px;font:400 13px/1.3 var(--font-ko);}
+.lot-ticker-header span:last-child{float:right;}
+.lot-ticker-card>.figma-image{height:283px;width:290px;object-fit:cover;}
+.lot-ticker-footer{height:50px;background:#fff;padding:9px 15px;font-size:24px;}
+.page-49.is-in-view .lot-lifestyle-1{animation:lot-row-a 10.8s linear infinite;}
+.page-49.is-in-view .lot-lifestyle-2{animation:lot-row-b 10.8s linear infinite;}
+@keyframes lot-row-a{0%{transform:translateX(0)}13.889%{transform:translateX(-236px)}27.778%{transform:translateX(-472px)}41.667%{transform:translateX(-708px)}55.556%{transform:translateX(-954.25px)}69.444%{transform:translateX(-1190.25px)}83.333%,100%{transform:translateX(-1426.25px)}}
+@keyframes lot-row-b{0%{transform:translateX(0)}13.889%{transform:translateX(236px)}27.778%{transform:translateX(472px)}41.667%{transform:translateX(708px)}55.556%{transform:translateX(1008px)}69.444%{transform:translateX(1244px)}83.333%,100%{transform:translateX(1373px)}}
+/* 26 — 4 promotional tiles appear in original Figma 3.2s order. */
+.page-50 .stage{background:linear-gradient(#e5e5e6,#fcfcfc);}
+.lot-vehicle-phone{position:absolute;left:719px;top:238px;width:465px;height:1009px;overflow:hidden;border-radius:29px;box-shadow:4px 4px 15px rgba(0,0,0,.3);background:#fff;}
+.lot-vehicle-phone>img:first-child{position:absolute;inset:0;object-fit:contain;}.lot-v-phone-screen{position:absolute;left:8%;top:20%;width:84%;height:46%;object-fit:cover;}
+.lot-vehicle-float{position:absolute;width:322px;height:322px;overflow:hidden;border-radius:20px;background:#eee;box-shadow:0 1px 10px rgba(0,0,0,.25);}
+.lot-vehicle-float>img{width:100%;height:100%;object-fit:cover;}
+.page-50.is-in-view .lot-v-1{animation:lot-pop-1 3.2s linear infinite;}
+.page-50.is-in-view .lot-v-2{animation:lot-pop-2 3.2s linear infinite;}
+.page-50.is-in-view .lot-v-3{animation:lot-pop-3 3.2s linear infinite;}
+.page-50.is-in-view .lot-v-4{animation:lot-pop-4 3.2s linear infinite;}
+@keyframes lot-pop-1{0%,37.188%{opacity:0;transform:translateY(26px) scale(.82)}42.5%{opacity:1;transform:translateY(-9px) scale(1.1)}45.625%,100%{opacity:1;transform:none}}
+@keyframes lot-pop-2{0%,3.125%{opacity:0;transform:translateY(26px) scale(.82)}8.438%{opacity:1;transform:translateY(-9px) scale(1.1)}11.563%,100%{opacity:1;transform:none}}
+@keyframes lot-pop-3{0%,25.625%{opacity:0;transform:translateY(26px) scale(.82)}30.938%{opacity:1;transform:translateY(-9px) scale(1.1)}34.063%,100%{opacity:1;transform:none}}
+@keyframes lot-pop-4{0%,14.375%{opacity:0;transform:translateY(26px) scale(.82)}19.688%{opacity:1;transform:translateY(-9px) scale(1.1)}22.813%,100%{opacity:1;transform:none}}
+/* 28 — Orion overview. */
+
+.orion-overview-heading h2{color:#e60012!important;}
+.orion-halo{position:absolute;left:380px;top:240px;width:1100px;height:850px;background:radial-gradient(ellipse,#ffc6cf 0%,#fff0f2 34%,transparent 70%);opacity:.8;filter:blur(36px);}
+.orion-stamp{position:absolute;z-index:4;padding:17px 35px;border:2px solid #e60012;border-radius:95px;background:rgba(255,255,255,.88);font:600 32px/1 var(--font-ko);color:#e60012;white-space:nowrap;}
+.orion-handphone{position:absolute;left:650px;top:330px;width:650px;height:650px;z-index:5;}
+.orion-handphone .orion-phone-bg{position:absolute;inset:0;object-fit:contain;}
+.orion-handphone .orion-phone-content{position:absolute;width:260px;height:545px;top:19px;left:200px;object-fit:cover;transform:rotate(-5deg);border-radius:40px;}
+/* 29~31 intentionally have only two text layers each in the source Figma nodes. */
+
+.orion-type-heading{position:absolute;top:100px;left:100px;display:flex;flex-direction:column;gap:13px;z-index:4;text-transform:uppercase;}
+.orion-type-heading span{color:#e60012;font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;}
+.orion-type-heading h2{font:650 22px/1.25 var(--font-ko);letter-spacing:-.44px;color:#1d1d1d;}
+/* 32 — 4 overlapping social posts, New Product. */
+
+.orion-type-chips{position:absolute;top:192px;left:100px;display:flex;gap:16px;}
+.orion-type-chips span{height:34px;display:inline-flex;align-items:center;border-radius:50px;padding:5px 18px;background:#e6d2d3;color:#6b2b30;font:400 18px/1.3 var(--font-ko);}
+.orion-type-chips span:first-child{background:#e60012;color:#fff;font-weight:650;}
+.orion-type-card{position:absolute;top:340px;width:346px;height:537px;overflow:hidden;background:white;border-radius:19.3px;box-shadow:0 4px 18px rgba(0,0,0,.12);}
+.orion-type-card img{width:100%;height:100%;object-fit:cover;}
+.orion-card-1{left:233px;}.orion-card-2{left:610px;transform:rotate(-10deg);}.orion-card-3{left:965px;transform:rotate(3deg);}.orion-card-4{left:1338px;}
+/* 33 — Figma 4s category reel, starts at campaign and ends on campaign. */
+
+.index33-reel{position:absolute;left:100px;top:208px;width:1170px;height:1100px;pointer-events:none;}
+.index33-track{position:relative;width:100%;height:100%;will-change:transform;}
+.index33-word{position:absolute;left:0;font:700 208.93px/1.1 var(--font-latin);letter-spacing:-6.2679px;white-space:nowrap;}
+.index33-word-1{top:0;opacity:.01;}.index33-word-2{top:226px;opacity:1;}.index33-word-3{top:441px;opacity:.05;}.index33-word-4{top:656px;opacity:.02;}.index33-word-5{top:882px;opacity:.01;}
+.index33-preview{position:absolute;left:1420px;top:407px;width:400px;display:flex;align-items:center;justify-content:space-between;font:700 100px/1.2 var(--font-latin);}
+.index33-images{width:200px;height:200px;position:relative;overflow:hidden;}
+.index33-images img{position:absolute;inset:0;object-fit:cover;}
+.index33-photo-2{opacity:0;}
+
+
+
+
+@keyframes index33-move{0%{transform:translateY(0)}8.75%{transform:translateY(0);animation-timing-function:cubic-bezier(.65,0,.35,1)}18.75%{transform:translateY(-215px)}27.5%{transform:translateY(-215px);animation-timing-function:cubic-bezier(.65,0,.35,1)}37.5%{transform:translateY(-441px)}46.25%{transform:translateY(-441px);animation-timing-function:cubic-bezier(.65,0,.35,1)}56.25%,100%{transform:translateY(-656px)}}
+@keyframes index33-w1{0%,8.75%{opacity:.01}18.75%,100%{opacity:0}}
+@keyframes index33-w2{0%,8.75%{opacity:1}18.75%,27.5%{opacity:.05}37.5%,46.25%{opacity:.02}56.25%,100%{opacity:0}}
+@keyframes index33-w3{0%,8.75%{opacity:.05}18.75%,27.5%{opacity:1}37.5%,46.25%{opacity:.05}56.25%,100%{opacity:.02}}
+@keyframes index33-w4{0%,8.75%{opacity:.02}18.75%,27.5%{opacity:.05}37.5%,46.25%{opacity:1}56.25%,100%{opacity:.05}}
+@keyframes index33-w5{0%,8.75%{opacity:.01}18.75%,27.5%{opacity:.02}37.5%,46.25%{opacity:.05}56.25%,100%{opacity:1}}
+@keyframes index33-i1{0%{opacity:1}48%{opacity:1;animation-timing-function:ease-in-out}50%{opacity:0}98%{opacity:0;animation-timing-function:ease-in-out}100%{opacity:1}}
+@keyframes index33-i2{0%{opacity:0}48%{opacity:0;animation-timing-function:ease-in-out}50%{opacity:1}98%{opacity:1;animation-timing-function:ease-in-out}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){
+  .project-extra *{animation-duration:0s!important;animation-iteration-count:1!important;transition-duration:0s!important;}
+}
+
+/* Use the actual Figma horizon SVG when locally present, with CSS gradient as fallback. */
+.lot-red-horizon img{position:absolute;inset:0;object-fit:contain;}
+
+
+.lot-outcome{position:relative;} .lot-outcome>.lot-circle-source{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;} .lot-outcome>b, .lot-outcome>span{position:relative;z-index:1;}
+
+
+/* ===== 기존 extension-pages.css / 병합 시작 ===== */
+/* Figma source pages 34—55 / original artboard 1920 × 1080.
+   Extends existing HTML, CSS, JS without altering page 01—33.
+   The original Figma imagery is referenced as LOCAL files only.
+   See asset-manifest.tsv and README.md for missing image exports. */
+.added-page .stage{font-family:var(--font-ko);overflow:hidden;}
+.added-page .figma-image{display:block;width:100%;height:100%;object-fit:contain;}
+.added-page img.figma-image.is-missing{visibility:hidden;}
+.added-page .f55-pic{position:absolute;overflow:hidden;}
+.added-page .f55-pic.new-bg>img, .added-page .f55-pic.new-cover-bg>img{object-fit:cover;}
+.added-page .new-description{position:absolute;left:100px;top:100px;right:100px;z-index:7;display:grid;grid-template-columns:665px minmax(0,1fr);gap:35px;align-items:start;font-family:var(--font-ko);}
+.added-page .new-description h2{font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;text-transform:uppercase;}
+.added-page .new-description p{font:400 16px/1.7 var(--font-ko);letter-spacing:-.64px;color:#3e3e3e;}
+.added-page .new-cover-text{position:absolute;inset:0;pointer-events:none;}
+.added-page .new-cover-brand{position:absolute;top:100px;left:100px;display:flex;flex-direction:column;gap:8px;white-space:nowrap;}
+.added-page .new-cover-brand span{font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;}
+.added-page .new-cover-brand strong{font:700 25px/1.25 var(--font-ko);letter-spacing:-.5px;}
+.added-page .new-cover-facts{position:absolute;left:1188px;top:100px;display:grid;grid-template-columns:225px 233px 179px;}
+.added-page .new-cover-facts>div{display:flex;flex-direction:column;gap:13px;}
+.added-page .new-cover-facts b{font:600 18px/1.25 var(--font-ko);}
+.added-page .new-cover-facts span{font:300 16px/1.2 var(--font-ko);letter-spacing:-.32px;}
+/* 34: 3o3 cover with Figma's sky-blue stage. */
+.page-03 .stage{background:linear-gradient(180deg,#8abaf3,#f8fcff);}
+/* 35: brand experience building and labels. */
+.page-04 .stage{background:#f8fcff;}
+.p35-badge{position:absolute;z-index:3;background:#fff;border:1px solid #d6e6fd;color:#0369f1;border-radius:60px;white-space:nowrap;padding:12px 22px;box-shadow:0 3px 20px rgba(56,113,202,.08);font:650 23px/1.3 var(--font-ko);}
+/* 36: source contains two static text layers only. */
+.page-05 .stage{background:#f5faff;}
+/* 37: original logo assets and specified color system. */
+.page-06 .stage{background:#f5faff;}
+.p37-caption{position:absolute;left:50%;transform:translateX(-50%);padding:10px 19px;border-radius:60px;background:#e3efff;color:#0369f1;font:600 16px/1.15 var(--font-ko);white-space:nowrap;text-transform:uppercase;}
+.p37-logo-caption{top:108px;}.p37-colors-caption{top:549px;}
+.p37-logo{position:absolute;left:700px;top:195px;width:520px;height:262px;display:flex;align-items:center;justify-content:center;}
+.p37-logo>img{position:absolute;max-width:100%;max-height:100%;object-fit:contain;}
+.p37-logo>.p37-logo-layer{opacity:1;}
+.p37-color{position:absolute;top:603px;width:290px;height:276px;border-radius:26px;padding:38px 37px;display:flex;flex-direction:column;justify-content:flex-end;gap:8px;}
+.p37-color b{font:500 18px/1.3 var(--font-ko);}.p37-color span{font:400 16px/1.3 var(--font-ko);}
+/* 38: imported artwork is a full-bleed static asset. */
+.page-07 .stage{background:#a4cafa;}
+/* 39—41: linked editorial photo grid across three scroll sections. */
+.page-08 .stage, .page-09 .stage{background:#f7f9fd;}
+.page-08 .f55-pic, .page-09 .f55-pic{border-radius:30px;}
+.page-08 .f55-pic img, .page-09 .f55-pic img{object-fit:cover;}
+.p40-label{position:absolute;top:687px;left:100px;color:#0369f1;font:650 20px/1.25 var(--font-ko);text-transform:uppercase;letter-spacing:-.4px;}
+/* 42 — four ad layouts behind a center animated vertical film. */
+
+
+
+
+.p42-scroll-window{position:absolute;top:188px;left:707px;width:487px;height:765px;border-radius:55px;overflow:hidden;background:#000f4e;z-index:3;}
+.p42-scroll-track{position:relative;width:487px;height:max-content;display:flex;flex-direction:column;will-change:transform;}
+.p42-scroll-track img{display:block;width:487px!important;height:487px!important;flex:0 0 487px;object-fit:cover!important;}
+
+@keyframes ad42-ticker{0%,10.526%{transform:translateY(0);animation-timing-function:ease-out;}100%{transform:translateY(-2605px);}}
+.p42-phone-overlay{z-index:4;pointer-events:none;}
+.p42-phone-overlay>img{object-fit:contain!important;}
+/* 43: Binggrae store cover. */
+
+/* 44: fantasy-brand mission. */
+
+.p44-mission{position:absolute;top:416px;width:350px;height:374px;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:#523488;}
+.p44-mission>.mission-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:0;}
+.p44-mission>h3{font:650 32px/1.15 Georgia,serif;position:relative;z-index:1;letter-spacing:-.5px;}
+.p44-mission>p{font:400 17px/1.5 var(--font-ko);position:relative;z-index:1;max-width:220px;margin-top:22px;}
+/* 45: logos and brand palette */
+.p45-cap{position:absolute;font:500 16px/1.3 var(--font-ko);color:#3e3e3e;text-transform:uppercase;}
+.p45-cap-h{left:200px;top:290px;}.p45-cap-v{left:975px;top:290px;}.p45-cap-c{left:200px;top:719px;}
+.p45-logo-tile{border:1px solid #dbc1e5;border-radius:30px;background:#fbfaf8;}
+.p45-logo-tile img{object-fit:contain;}
+.p45-swatch{position:absolute;top:760px;width:215px;height:164px;border-radius:28px;padding:24px;display:flex;align-items:flex-end;}
+.p45-swatch>span{font:500 16px/1.3 var(--font-ko);color:white;}
+/* 46: original Figma screen only displays a heading. */
+
+.bing-heading{position:absolute;top:100px;left:100px;font:650 20px/1.25 var(--font-ko);text-transform:uppercase;color:#422b61;letter-spacing:-.4px;}
+.bing-heading-light{color:#eeede8;}
+/* 47,48: original imagery fills the entire artboard. */
+
+/* 49: three informational posters */
+
+
+
+.p49-caption{position:absolute;top:897px;left:305px;width:1280px;display:flex;justify-content:space-between;font:300 16px/1.7 var(--font-ko);color:#ededed;}
+/* 50 two adjacent campaign print layouts */
+
+/* 51 full photographic still */
+
+/* 52 original includes descriptive text and capability chips, but no static artwork */
+
+.p52-desc{position:absolute;top:351px;left:1000px;width:800px;color:#3e3e3e;font:400 16px/1.7 var(--font-ko);}
+.p52-pills{position:absolute;top:444px;left:1015px;display:flex;gap:17px;align-items:center;}
+.p52-pills span{border:1.7px solid #432b64;border-radius:99px;padding:7px 16px;font:500 20px/1.3 var(--font-ko);color:#432b64;white-space:nowrap;}
+.p52-items{position:absolute;top:560px;left:1015px;color:#422b61;font:650 22px/1.25 var(--font-ko);text-transform:uppercase;}
+.p52-notes{position:absolute;top:965px;font:300 16px/1.15 var(--font-ko);color:#3e3e3e;white-space:nowrap;}
+.p52-notes.left{left:390px;}.p52-notes.right{left:860px;}
+/* 53 two seasonal descriptions / no images exist in source Figma node */
+.p53-month{position:absolute;top:124px;width:90px;height:85px;display:flex;align-items:center;justify-content:center;background:#9a89db;color:#fceff6;border-radius:25px;font:600 20px/1.3 var(--font-ko);}
+.p53-description{position:absolute;top:896px;text-align:center;color:#3e3e3e;font:400 16px/1.3 var(--font-ko);}
+.p53-description b{color:#3e3e3e;font-weight:600;}.p53-description.left{left:437px;width:500px;}.p53-description.right{left:1192px;width:500px;}
+/* 54 palace and character composite */
+.page-16 .stage{background:#462f64;}
+.page-16 .p54-backdrop>img{object-fit:cover;}
+.page-16 .p54-character>img{object-fit:contain;}
+/* 55: branding index. Keyframed reel and two-image transition; original duration 4s. */
+.page-17 .stage{background:#f9f9f9;}
+.p55-reel{position:absolute;left:100px;top:434px;width:1200px;height:1100px;pointer-events:none;}
+.p55-track{position:relative;width:100%;height:100%;will-change:transform;}
+.p55-word{position:absolute;left:0;display:block;font:700 208.93px/1.1 var(--font-latin);letter-spacing:-6.2679px;white-space:nowrap;color:#030303;}
+.p55-word-1{top:0;opacity:1;}.p55-word-2{top:226px;opacity:.05;}.p55-word-3{top:441px;opacity:.02;}.p55-word-4{top:667px;opacity:.01;}
+.p55-preview{position:absolute;left:1421px;top:407px;display:flex;width:400px;align-items:center;justify-content:space-between;font:700 100px/1.2 var(--font-latin);}
+.p55-preview-stack{position:relative;width:200px;height:200px;overflow:hidden;}
+.p55-image{position:absolute;inset:0;object-fit:cover;}.p55-image-2{opacity:0;}
+.page-17.is-in-view .p55-track{animation:p55-reel 4s linear infinite;}
+.page-17.is-in-view .p55-word-1{animation:p55-w1 4s linear infinite;}
+.page-17.is-in-view .p55-word-2{animation:p55-w2 4s linear infinite;}
+.page-17.is-in-view .p55-word-3{animation:p55-w3 4s linear infinite;}
+.page-17.is-in-view .p55-word-4{animation:p55-w4 4s linear infinite;}
+.page-17.is-in-view .p55-image-1{animation:p55-a1 4s linear infinite;}
+.page-17.is-in-view .p55-image-2{animation:p55-a2 4s linear infinite;}
+@keyframes p55-reel{0%,8.75%{transform:translateY(0);animation-timing-function:cubic-bezier(.65,0,.35,1)}18.75%,27.5%{transform:translateY(-226px);animation-timing-function:cubic-bezier(.65,0,.35,1)}37.5%,46.25%{transform:translateY(-441px);animation-timing-function:cubic-bezier(.65,0,.35,1)}56.25%,100%{transform:translateY(-667px)}}
+@keyframes p55-w1{0%,8.75%{opacity:1}18.75%,27.5%{opacity:.05}37.5%,46.25%{opacity:.02}56.25%,100%{opacity:0}}
+@keyframes p55-w2{0%,8.75%{opacity:.05}18.75%,27.5%{opacity:1}37.5%,46.25%{opacity:.05}56.25%,100%{opacity:.02}}
+@keyframes p55-w3{0%,8.75%{opacity:.02}18.75%,27.5%{opacity:.05}37.5%,46.25%{opacity:1}56.25%,100%{opacity:.05}}
+@keyframes p55-w4{0%,8.75%{opacity:.01}18.75%,27.5%{opacity:.02}37.5%,46.25%{opacity:.05}56.25%,100%{opacity:1}}
+@keyframes p55-a1{0%{opacity:1}48%{opacity:1;animation-timing-function:ease-in-out}50%{opacity:0}98%{opacity:0;animation-timing-function:ease-in-out}100%{opacity:1}}
+@keyframes p55-a2{0%{opacity:0}48%{opacity:0;animation-timing-function:ease-in-out}50%{opacity:1}98%{opacity:1;animation-timing-function:ease-in-out}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .added-page *{animation:none!important;transition:none!important;}
+}
+/* Original Figma SVG detail layers retained at their respective artboard positions. */
+.p35-vectors{position:absolute;inset:0;pointer-events:none;}
+.p35-vector{position:absolute;width:55px!important;height:55px!important;object-fit:contain;}
+.p35-vector.v2{left:470px;top:705px;}.p35-vector.v3{left:1480px;top:662px;}.p35-vector.v4{left:905px;top:820px;}
+.p42-instagram-icons{position:absolute;left:755px;top:400px;width:402px;height:549px;pointer-events:none;z-index:4;}
+.p42-icon{position:absolute;width:24px!important;height:24px!important;object-fit:contain;}
+.p42-imgAvatar{top:20px;left:15px;width:31px!important;height:31px!important;}
+.p42-imgVector{top:25px;right:13px;width:5px!important;height:16px!important;}
+.p42-imgIconLike{bottom:26px;left:16px;}.p42-imgComment{bottom:26px;left:61px;}.p42-imgShare{bottom:26px;left:99px;}.p42-imgBookmark{bottom:26px;right:20px;}
+.p42-photo-backup{position:absolute;left:756px;top:462px;width:402px;height:402px;opacity:0;pointer-events:none;}
+.p42-photo-backup>img{object-fit:cover;}
+.p42-mask-source{position:absolute;left:715px;top:188px;width:487px;height:765px;mask-repeat:no-repeat;pointer-events:none;opacity:0;}
+.p44-border-details{position:absolute;left:500px;top:430px;width:1000px;height:350px;pointer-events:none;}
+.p44-detail{position:absolute;width:90px!important;height:90px!important;object-fit:contain;opacity:.35;}
+.p44-detail-{left:0;top:90px;}.p44-detail-1{left:345px;top:90px;}.p44-detail-2{left:685px;top:90px;}.p44-detail-3{right:0;top:90px;}
+.p45-vectors{position:absolute;top:340px;left:200px;width:1520px;height:300px;pointer-events:none;}
+.p45-outline{position:absolute;top:0;height:300px!important;width:540px!important;object-fit:contain;}
+.p45-outline-5{left:110px;}.p45-outline-6{right:125px;}
+
+
+/* ===== 기존 final-pages.css / 병합 시작 ===== */
+/* Page 56—83; each Figma source frame is designed at 1920×1080. */
+.portfolio-extension>.stage{overflow:hidden; font-family:var(--font-ko);}
+.portfolio-extension .scene-asset{position:absolute;overflow:hidden;}
+.portfolio-extension .scene-asset>img{width:100%;height:100%;object-fit:contain;display:block;}
+.portfolio-extension .scene-fill>img, .portfolio-extension .scene-cover-bg>img, .portfolio-extension .p58-core-image>img, .portfolio-extension .p79-tile>img, .portfolio-extension .p82-scene>img{object-fit:cover;}
+.portfolio-extension .scene-cover-copy{position:absolute;inset:0;pointer-events:none;}
+.portfolio-extension .scene-cover-title{position:absolute;top:100px;left:100px;display:flex;flex-direction:column;gap:8px;white-space:nowrap;}
+.portfolio-extension .scene-cover-title>span{font:600 20px/1.25 var(--font-ko);letter-spacing:-.4px;text-transform:uppercase;}
+.portfolio-extension .scene-cover-title>strong{font:700 25px/1.25 var(--font-ko);letter-spacing:-.5px;}
+.portfolio-extension .scene-cover-meta{position:absolute;top:100px;left:1188px;display:grid;grid-template-columns:225px 233px 180px;}
+.portfolio-extension .scene-cover-meta>div{display:flex;flex-direction:column;gap:13px;}
+.portfolio-extension .scene-cover-meta b{font:600 18px/1.25 var(--font-ko);}
+.portfolio-extension .scene-cover-meta span{font:300 16px/1.4 var(--font-ko);white-space:pre-line;letter-spacing:-.32px;}
+.portfolio-extension .scene-description{position:absolute;top:100px;left:100px;width:1720px;display:grid;grid-template-columns:665px 1fr;gap:35px;z-index:7;}
+.portfolio-extension .scene-description h2{font:600 20px/1.25 var(--font-ko);letter-spacing:-.4px;text-transform:uppercase;color:#1d1d1d;}
+.portfolio-extension .scene-description p{font:400 16px/1.7 var(--font-ko);letter-spacing:-.64px;color:#3e3e3e;}
+.portfolio-extension .scene-description.scene-desc-dark h2, .portfolio-extension .scene-description.scene-desc-dark p{color:#fff;}
+.portfolio-extension .scene-media, .portfolio-extension .scene-media-cover{position:absolute;inset:0;display:block;width:1920px;height:1080px;object-fit:cover;background:transparent;}
+.portfolio-extension .scene-media-cover[aria-label]{pointer-events:none;}
+.portfolio-extension img.is-missing{visibility:hidden;}
+/* 57 BPT rebranding challenges */
+.page-19 .p57-glow{position:absolute;width:690px;height:690px;left:615px;top:205px;border-radius:50%;background:radial-gradient(circle,rgba(2,92,255,0) 21%,rgba(2,92,255,.9) 49%,rgba(2,92,255,0) 72%);filter:blur(42px);opacity:.88;}
+.page-19 .p57-bubble{z-index:2;}
+.page-19 .p57-bubble-caption{position:absolute;width:310px;height:310px;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font:400 22px/1.5 var(--font-ko);letter-spacing:-.88px;z-index:3;}
+.page-19 .p57-center{position:absolute;left:881px;top:547px;width:160px;text-align:center;font:700 18px/1.25 var(--font-ko);color:#fff;z-index:4;}
+.page-19 .p57-connector{opacity:.6;}
+/* 58 core values */
+.page-20 .scene-description{z-index:6;}
+.page-20 .p58-core-image>img{object-fit:cover;}
+.page-20 .p58-core-image:after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,transparent 52%,rgba(0,0,0,.85));pointer-events:none;}
+.p58-core{position:absolute;top:585px;width:445px;color:white;z-index:4;}
+.p58-core span{display:block;font:400 16px/1.7 var(--font-ko);margin-bottom:15px;}
+.p58-core strong{display:block;font:800 34px/1.5 var(--font-ko);}
+.p58-core p{position:absolute;top:300px;font:500 17px/1.7 var(--font-ko);white-space:nowrap;}
+/* 60 logo comparison */
+.p60-black{position:absolute;left:0;top:0;width:1920px;height:453px;background:#030303;}
+.p60-rule{position:absolute;top:242px;left:310px;width:1300px;border-top:2px solid #5e5e5e;}
+.p60-tag{position:absolute;top:260px;font:500 16px/1.3 var(--font-ko);color:#b1b1b1;}
+.p60-title{position:absolute;top:139px;left:831px;font:800 29px/1.1 var(--font-ko);color:#fff;white-space:nowrap;}
+/* 61 identity chips */
+.p61-tags{position:absolute;left:200px;top:412px;display:flex;width:400px;flex-wrap:wrap;gap:13px;z-index:5;}
+.p61-tags span{border:1.5px solid #005cff;color:#005cff;border-radius:99px;padding:7px 16px;font:400 18px/1.2 var(--font-ko);}
+.p61-tags-right{left:1365px;top:725px;}
+.p61-tags-right span{background:#005cff;color:white;}
+/* 65 asset grid */
+.p65-title{position:absolute;top:100px;left:100px;font:600 20px/1.25 var(--font-ko);color:#fff;text-transform:uppercase;}
+.p65-label{position:absolute;width:220px;text-align:center;font:400 18px/1.25 var(--font-ko);color:#fff;text-transform:uppercase;}
+/* 69 labeled issues */
+.page-54 .scene-description{z-index:6;}
+.p69-issue{position:absolute;color:#000;font:400 20px/1.3 var(--font-ko);z-index:5;width:410px;letter-spacing:-.7px;}
+.p69-issue span{display:inline-block;background:#dd2524;font-weight:650;font-size:18px;padding:6px 9px;}
+.p69-issue p{display:table;background:#dd2524;margin-top:8px;padding:8px 10px;max-width:440px;}
+/* 70 sauce goal */
+.p70-target, .p70-thinking, .p70-action, .p70-goal{position:absolute;color:#fff;text-align:center;font:300 18px/1.6 var(--font-ko);}
+.p70-target{left:120px;top:490px;width:360px;}.p70-thinking{left:532px;top:289px;width:370px;}.p70-action{left:800px;top:610px;width:345px;}.p70-goal{left:1360px;top:465px;width:420px;}
+.p70-target b, .p70-thinking b, .p70-action b{background:#dd2524;color:#000;font:700 21px/1.25 var(--font-ko);padding:5px 10px;display:table;margin:0 auto 22px;}
+.p70-goal>span{color:#dc0f0f;font:700 22px/1.7 var(--font-ko);}
+.p70-goal>p{font-size:30px;line-height:1.45;margin-top:30px;}
+.p70-goal>p strong{font-weight:750;}
+/* 72 logo type sheet */
+.p72-heading, .p73-heading, .p75-heading{position:absolute;top:100px;left:100px;font:650 20px/1.25 var(--font-ko);text-transform:uppercase;color:#fff;}
+.p72-one, .p72-two{position:absolute;top:335px;color:#fff;}
+.p72-one{left:440px;width:650px;}.p72-two{left:1220px;width:420px;}
+.p72-one b, .p72-two b{position:absolute;left:30px;top:-50px;color:#e00100;font:500 18px/1.25 var(--font-ko);}
+.p72-one em, .p72-two em{position:absolute;left:30px;top:220px;color:#e00100;font:500 18px/1.25 var(--font-ko);font-style:normal;}
+.p72-one small{position:absolute;left:-120px;top:-48px;font:400 16px/1.25 var(--font-ko);}
+.p72-wordmark{display:block;font:900 80px/.95 "League Gothic","Impact","Arial Narrow",sans-serif;font-stretch:condensed;letter-spacing:-3px;white-space:nowrap;border:2px solid #53100c;outline:1px dashed #a7271d;outline-offset:10px;}
+.p72-wordmark-stacked{font-size:96px;line-height:.84;width:max-content;}
+.p72-min{position:absolute;left:314px;top:855px;display:flex;align-items:center;gap:95px;color:#fff;font:400 18px/1.25 var(--font-ko);}
+.p72-min strong{font:900 34px/1.1 "League Gothic","Impact",sans-serif;}.p72-min span{color:#d71920;}
+/* 73 style system */
+.p73-fonts{position:absolute;left:240px;top:155px;width:1500px;display:grid;grid-template-columns:1fr 1fr;gap:90px;color:#fff;}
+.p73-fonts>div{position:relative;}.p73-fonts span{font:500 18px/1.25 var(--font-ko);display:block;text-align:center;}
+.p73-fonts strong{display:block;height:305px;text-align:center;font:700 260px/1.1 "League Gothic","Impact",sans-serif;-webkit-text-stroke:1px #aaa;color:transparent;letter-spacing:-12px;}
+.p73-fonts .p73-pragati{font-family:"Pragati Narrow","Arial Narrow",sans-serif;letter-spacing:-8px;}
+.p73-fonts small{display:block;color:#fff;font:400 15px/1.4 var(--font-ko);}
+.p73-fonts p{color:#9a9a9a;font:400 15px/1.5 var(--font-ko);margin-top:8px;}
+.p73-color{position:absolute;top:681px;width:244px;height:320px;color:#fff;}
+.p73-color img{width:100%;height:204px;object-fit:cover;}.p73-color>div{padding:25px 15px;font:600 17px/1.25 var(--font-ko);text-transform:uppercase;}
+/* 75 package explanation */
+.page-60 .p75-heading{z-index:5;}
+.p75-spec{position:absolute;width:340px;color:#fff;text-align:left;z-index:4;}
+.p75-spec strong{font:800 27px/1.2 "League Gothic","Impact",sans-serif;letter-spacing:-.5px;}
+.p75-spec p{font:350 16px/1.7 var(--font-ko);white-space:pre-line;margin-top:12px;}
+.page-60 .p75-marker{opacity:.85;}
+/* 78 typography */
+.p78-type{position:absolute;top:395px;left:120px;width:1680px;text-align:center;color:#dd2524;display:flex;flex-direction:column;align-items:center;}
+.p78-type strong{white-space:nowrap;font:800 160px/.95 "League Gothic","Impact","Arial Narrow",sans-serif;letter-spacing:-5px;}
+/* 79 pop-up collage 5-second stepped appear */
+.p79-tile{transform-origin:50% 50%;transform:scale(1);}
+.page-64.is-in-view .p79-tile{animation:p79-reveal 5s linear infinite;}
+.page-64.is-in-view .p79-tile-5{animation-delay:-.069s;}.page-64.is-in-view .p79-tile-4{animation-delay:-.153s;}.page-64.is-in-view .p79-tile-6{animation-delay:-.261s;}.page-64.is-in-view .p79-tile-1{animation-delay:-.278s;}.page-64.is-in-view .p79-tile-7{animation-delay:-.373s;}.page-64.is-in-view .p79-tile-3{animation-delay:-.453s;}.page-64.is-in-view .p79-tile-2{animation-delay:-.558s;}
+@keyframes p79-reveal{0%,2%{transform:scale(0)}6%,100%{transform:scale(1)}}
+/* 82 layered picture sequence: Figma original 4 second loop. */
+@media (prefers-reduced-motion:reduce){.portfolio-extension *{animation:none!important;transition:none!important;}}
+
+
+/* ==============================================================
+   Figma verified: Project 01 frames 04,06,09,10,12,13,14,15,16
+   Source canvas: 1920 x 1080; all coordinates below are design px.
+   User-exported PNG files are expected in assets/project01/image/.
+   ============================================================== */
+/* 04 — use Figma's exact image-filled logo and align metadata columns. */
+.page-28 .p04-logo{
+  position:absolute;left:953px;top:596px;width:967px!important;height:483.5px!important;
+  object-fit:cover!important;max-width:none;z-index:1;
+}
+.page-28 .p04-header{
+  display:block;position:absolute;left:100px;top:100px;width:1720px;height:75px;
+}
+.page-28 .work-project-title{position:absolute;left:0;top:0;gap:0;}
+.page-28 .work-project-title span{line-height:14px;}
+.page-28 .work-project-title b{position:relative;top:19px;line-height:18px;}
+.page-28 .p04-meta{position:absolute;top:0;gap:0;}
+.page-28 .p04-meta:nth-child(2){left:1088px;}
+.page-28 .p04-meta:nth-child(3){left:1305px;}
+.page-28 .p04-meta:nth-child(4){left:1523px;}
+.page-28 .p04-meta strong{line-height:13px;}
+.page-28 .p04-meta span{position:relative;top:20px;line-height:1.2;}
+.page-28 .p04-award{right:99.5px;}
+
+/* 06 — one composite main illustration; 8 precisely located image fills. */
+.page-30 .p06-main-outline > .p06-main-composite{width:466px!important;height:466px!important;object-fit:cover!important;}
+.page-30 .p06-icon > span{position:absolute;display:block;margin-top:0;white-space:nowrap;}
+.page-30 .p06-icon:nth-child(1) > span{left:45px;top:193px;}
+.page-30 .p06-icon:nth-child(2) > span{left:24px;top:193px;}
+.page-30 .p06-icon:nth-child(3) > span{left:42px;top:193px;}
+.page-30 .p06-icon:nth-child(4) > span{left:38px;top:193px;}
+.page-30 .p06-icon:nth-child(5) > span{left:39px;top:142px;}
+.page-30 .p06-icon:nth-child(6) > span{left:3px;top:182px;}
+.page-30 .p06-icon:nth-child(7) > span{left:27px;top:160px;}
+.page-30 .p06-icon:nth-child(8) > span{left:24px;top:177px;}
+
+/* 09 — source's CHARACTER tag begins at Y=100, not Y=188. */
+.page-33 .p09-badge-1{top:100px;}
+
+/* 12 — source screenshot contains ONE composite image of 3 phones. */
+.page-36 .p12-glow{left:168px;top:-17px;width:2117px;height:1423px;}
+.page-36 .p12-composite{
+  position:absolute;left:431px;top:157px;width:1489px!important;height:923px!important;
+  object-fit:cover!important;max-width:none;
+}
+
+/* 13 — screenshot source x=200,586,972,1358; image slots x=223,609,1026,1381. */
+.page-37 .p13-card{padding:0;}
+.page-37 .p13-card-chip{
+  position:absolute;top:13px;left:50%;transform:translateX(-50%);
+  margin:0;height:36px;display:flex;align-items:center;justify-content:center;
+}
+.page-37 .p13-card-subtitle{position:absolute;top:84px;left:0;width:100%;margin:0;}
+.page-37 .p13-card-img{position:absolute;left:23px;top:120px;width:316px;height:316px;margin:0;}
+.page-37 .p13-card:nth-of-type(3) .p13-card-img{left:54px;width:253px;}
+.page-37 .p13-card-list{position:absolute;left:48px;top:474px;margin:0;}
+.page-37 .p13-card:nth-of-type(3) .p13-card-list{left:53px;}
+.page-37 .p13-card:nth-of-type(4) .p13-card-list{left:44px;}
+
+/* 14 — source phone fill at (179,229), 585x851. */
+.page-38 .p14-phone{left:179px;top:229px;width:585px;height:851px;}
+.page-38 .p14-phone img{object-fit:cover!important;}
+
+/* 15 — exact source composite phone, screen2, description positions. */
+.page-39 .p15-app-mockup{left:753px;top:173px;width:413.5px;height:798px;}
+.page-39 .p15-leftmid{left:313.5px;}
+.page-39 .p15-description{left:1229px;}
+
+/* 16 — each exported Figma cropped layer is already its own finished bitmap. */
+.page-40 .p16-board img{
+  display:block;width:100%!important;height:100%!important;max-width:100%!important;
+  object-fit:cover!important;transform:none!important;
+}
+
+
+/* ===== targeted fixes: page-08 / page-13 / page-14 ===== */
+
+/* PAGE 08 — Figma frame 3537:1085: GIF characters and name/chip coordinates. */
+.page-32 .p08-character{
+  top:0; width:400px; height:915px; text-align:center;
+}
+.page-32 .p08-character.blue{left:284px!important;}
+.page-32 .p08-character.cyan{left:760px!important;}
+.page-32 .p08-character.green{left:1221px!important; width:436px;}
+.page-32 .p08-character > .character-figure{
+  position:absolute; left:0; top:314px; width:400px!important; height:400px!important;
+  display:block; object-fit:contain!important; max-width:none;
+}
+.page-32 .p08-character.green > .character-figure{top:296px;width:436px!important;height:436px!important;}
+.page-32 .p08-character h3{
+  position:absolute;left:0;top:724px;width:100%;height:37px;margin:0;
+  font:700 43px/37px "Grandstander",var(--font-latin);
+  letter-spacing:-1px;white-space:nowrap;
+}
+.page-32 .p08-chips{
+  position:absolute;top:801px;left:0;width:100%;margin:0;
+  gap:10px;align-items:center;font:400 16px/1.2 var(--font-ko);
+}
+.page-32 .p08-chips-solid, .page-32 .p08-chips-outline{gap:9px;justify-content:center;align-items:center;}
+.page-32 .p08-chips span{
+  height:40px;display:inline-flex;align-items:center;justify-content:center;
+  padding:0 13px; border-radius:50px; white-space:nowrap;
+}
+.page-32 .p08-chips-solid span:first-child{min-width:140px;}
+.page-32 .p08-chips-solid span:nth-child(2){min-width:122px;}
+.page-32 .p08-character.cyan .p08-chips-solid span:nth-child(2){min-width:139px;}
+.page-32 .p08-chips-outline span:nth-child(1), .page-32 .p08-chips-outline span:nth-child(2){min-width:91px;}
+.page-32 .p08-chips-outline span:nth-child(3){min-width:104px;}
+.page-32 .p08-watermark{left:270px;top:499px;width:1381px;height:121px;font-size:135px;line-height:121px;overflow:hidden;opacity:.085;}
+
+/* PAGE 13 — connector lines are foreground, not buried by the four white cards. */
+.page-37 .p13-connector{
+  z-index:6;
+  top:294px;
+  height:87px; /* Ends exactly at the pill top (y=381), never crossing its text. */
+  width:1px;
+  pointer-events:none;
+}
+.page-37 .p13-guideline{z-index:2;}
+.page-37 .p13-card{z-index:3;}
+
+/* PAGE 14 — restore original staged 12-second 3D-card movement (8 × 1.5s).
+   Figma presents the images as an overlapping stack; the old single-photo
+   opacity carousel removed the movement. Cards are opaque whenever visible. */
+.page-38 .p14-cards{perspective:1100px;overflow:visible;}
+.page-38 .p14-social-card{
+  visibility:visible; opacity:1; transform:none;
+  position:absolute; inset:0;
+  overflow:hidden; border-radius:30px;
+  pointer-events:none; box-shadow:0 12px 20px rgba(0,0,0,.075);
+  transform-origin:50% 50%;
+  backface-visibility:hidden;
+  transition:none;
+  animation:p14-restored-stack 12s ease-in-out infinite both;
+  animation-delay:calc(var(--p14-order) * 1.5s - 12s);
+  will-change:transform,opacity;
+}
+.page-38 .p14-social-card.is-active{opacity:1;visibility:visible;transform:none;}
+/* Start the 12-second timeline at scroll-entry, not at initial document load. */
+.page-38:not(.is-in-view) .p14-social-card{animation:none;opacity:0;visibility:hidden;transform:none;}
+.page-38:not(.is-in-view) .p14-card-1{opacity:1;visibility:visible;z-index:8;}
+.page-38 .p14-card-1{--p14-order:0;}
+.page-38 .p14-card-2{--p14-order:1;}
+.page-38 .p14-card-3{--p14-order:2;}
+.page-38 .p14-card-4{--p14-order:3;}
+.page-38 .p14-card-5{--p14-order:4;}
+.page-38 .p14-card-6{--p14-order:5;}
+.page-38 .p14-card-7{--p14-order:6;}
+.page-38 .p14-card-8{--p14-order:7;}
+/* One large foreground image + two receding upper-left cards.
+   Each image exits the foreground before the next one arrives. */
+@keyframes p14-restored-stack {
+  0%, 9% {transform:translate(0,0) scale(1) rotate(0deg);opacity:1;z-index:8;}
+  12.5% {transform:translate(690px,30px) scale(.93) rotate(12deg);opacity:0;z-index:8;}
+  15%, 60% {transform:translate(-110px,-245px) scale(.64) rotate(-10deg);opacity:0;z-index:0;}
+  62.5% {transform:translate(-96px,-210px) scale(.69) rotate(-9deg);opacity:1;z-index:1;}
+  75% {transform:translate(-74px,-158px) scale(.78) rotate(-6deg);opacity:1;z-index:2;}
+  87.5% {transform:translate(-45px,-99px) scale(.87) rotate(-3deg);opacity:1;z-index:3;}
+  98%, 100% {transform:translate(0,0) scale(1) rotate(0deg);opacity:1;z-index:7;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .page-38 .p14-social-card{animation:none!important;opacity:0!important;visibility:hidden!important;transform:none!important;}
+  .page-38 .p14-card-1{opacity:1!important;visibility:visible!important;z-index:2;}
+}
+
+
+/* ===============================================================
+   FIGMA SOURCE ALIGNMENT: page-17~28, page-32, page-34
+   Applied on top of the original 1920px artboard stylesheet.
+   All image references are to Figma layer names, never re-exported
+   screenshots. All other 83-page styles remain in the original file.
+   =============================================================== */
+/* 17 / 27: background image already contains the Figma artwork. */
+.page-41 .cover-background{ object-fit:cover!important; }
+/* 18: Ellipse 1833 / 1834 / 1835 use a vertical LINEAR gradient.
+   Source fills: #FFE9E9, fill-opacity .25, alpha=1 at top → .30 at bottom. */
+.page-42 .lot-overview-col{ top:322px; width:287px; height:525px; }
+.page-42 .lot-num{ position:absolute;left:51px;top:0;width:58px;height:27px; }
+.page-42 .lot-overview-col-2 .lot-num{ left:60px; }
+.page-42 .lot-overview-col-3 .lot-num{ left:66px; }
+.page-42 .lot-asis{ position:absolute;left:0;top:51px;width:287px;height:auto;margin:0!important;font-size:23px;line-height:1.5;font-weight:500; }
+.page-42 .lot-down{ position:absolute;left:132px;top:171px;width:20px;height:118px;font-size:0;z-index:4; }
+.page-42 .lot-down::before{content:"";position:absolute;left:10px;top:0;width:1px;height:85px;background:#BA1A31;}
+.page-42 .lot-down::after{content:"↓";position:absolute;left:0;bottom:-1px;font:300 43px/1 var(--font-ko);color:white;}
+.page-42 .lot-outcome{ position:absolute;left:0;top:238px;width:287px;height:287px;
+  border:1px solid #ba1a31;border-radius:50%;gap:0;
+  background:linear-gradient(to bottom,rgba(255,233,233,.25) 0%,rgba(255,233,233,.075) 100%); }
+.page-42 .lot-outcome>b{ position:absolute;top:105px;left:0;width:100%;font-size:23px;line-height:1.5;white-space:nowrap; }
+.page-42 .lot-outcome>span{ position:absolute;top:150px;left:0;width:100%;font-size:18px;line-height:1.5;white-space:nowrap; }
+/* 19: actual ellipse geometry and 8 independent first/second image fills. */
+.page-43 .lot-red-horizon{left:-179px;top:540px;width:2278px;height:1629px;transform:none;
+  background:linear-gradient(to bottom,#ba1a31 0%,rgba(186,26,49,.45) 32%,rgba(186,26,49,0) 80%);}
+.page-43 .lot-direction-item{overflow:visible;}
+.page-43 .lot-direction-item>.lot-normal{position:absolute;inset:auto;object-fit:contain!important;}
+.page-43 .lot-direction-item .lot-second{position:absolute;inset:auto;overflow:visible;}
+.page-43 .lot-direction-item .lot-second img{position:absolute;left:0!important;top:0!important;width:100%!important;height:100%!important;max-width:none;object-fit:contain!important;}
+.page-43 .lot-dir-travel{left:233px;top:377px;width:225px;height:311px;}
+.page-43 .lot-dir-travel>.lot-normal{left:0;top:0;width:225px;height:311px;}
+.page-43 .lot-dir-travel .lot-second{left:21px;top:74px;width:184px;height:199px;}
+.page-43 .lot-dir-personal{left:541px;top:532px;width:322.6px;height:106px;}
+.page-43 .lot-dir-personal>.lot-normal{left:0;top:0;width:322.6px;height:106px;}
+.page-43 .lot-dir-personal .lot-second{left:35px;top:0;width:278px;height:104px;}
+.page-43 .lot-dir-business{left:974px;top:455px;width:293px;height:233px;}
+.page-43 .lot-dir-business>.lot-normal{left:0;top:62px;width:293px;height:163px;}
+.page-43 .lot-dir-business .lot-second{left:0;top:0;width:293px;height:233px;}
+.page-43 .lot-dir-management{left:1389px;top:469px;width:277px;height:234px;}
+.page-43 .lot-dir-management>.lot-normal{left:19px;top:4px;width:258px;height:230px;}
+.page-43 .lot-dir-management .lot-second{left:0;top:0;width:277px;height:206px;}
+.page-43 .lot-direction-label{top:734px;left:auto;}
+.page-43 .lot-label-travel{left:339.5px;}.page-43 .lot-label-personal{left:685.5px;}
+.page-43 .lot-label-business{left:1093px;}.page-43 .lot-label-management{left:1516px;}
+/* 20/21 use original image-fill bounds; existing page-20 circular wipe stays intact. */
+.page-44 .lot-message img{object-fit:fill!important;}
+/* 22: original images and a real VIDEO layer. Remove HTML-simulated phone UI. */
+.page-46 .stage{background:linear-gradient(169.636deg,#86898f 10.67%,#e8e8e8 64.09%);}
+.page-46 .lot-p22-glow{position:absolute;pointer-events:none;border-radius:50%;
+   background:radial-gradient(ellipse at center,rgba(255,255,255,.98),rgba(255,255,255,0) 72%);filter:blur(60px);}
+.page-46 .lot-p22-glow-1{left:313px;top:-56px;width:1093px;height:991px;filter:blur(67px);}
+.page-46 .lot-p22-glow-2{left:802px;top:524px;width:1595px;height:1595px;}
+.page-46 .lot-p22-glow-3{left:-1042px;top:559px;width:1530px;height:1530px;}
+.page-46 .lot-p22-logo{position:absolute;left:-2px;top:892px;width:1952.5px!important;height:188.5px!important;z-index:1;object-fit:fill!important;}
+.page-46 .lot-p22-text{position:absolute;object-fit:contain!important;z-index:3;}
+.page-46 .lot-p22-road{left:351px;top:490px;width:136.4px!important;height:29px!important;}
+.page-46 .lot-p22-chabang{left:501px;top:596px;width:174.6px!important;height:57.8px!important;}
+.page-46 .lot-p22-bizcar{left:1264px;top:345px;width:426.5px!important;height:179.5px!important;}
+.page-46 .lot-p22-video{position:absolute;left:783.8px;top:214px;width:352.9px;height:765px;object-fit:cover;
+  border-radius:53px;background:linear-gradient(#d60e17,#8b000c);z-index:4;}
+.page-46 .lot-p22-phone{position:absolute;left:748px;top:179px;width:425px!important;height:837px!important;object-fit:fill!important;z-index:5;pointer-events:none;}
+/* 23: 373×485px source PNG includes headers, content and all social controls. */
+.page-47 .lot-p23-slide{grid-template-columns:repeat(4,373px);gap:30px;}
+.page-47 .lot-p23-card{width:373px!important;height:485px!important;object-fit:fill!important;border-radius:32px;
+ box-shadow:0 3px 9px rgba(0,0,0,.13);}
+/* 24: single complete phone mockup image + 6 original 291×291 image fills. */
+.page-48 .lot-travel-phone{left:192px;top:233px;width:458px;height:847px;border-radius:0;overflow:hidden;background:transparent;box-shadow:none;}
+.page-48 .lot-travel-phone>img{display:block;width:100%;height:100%;object-fit:fill!important;}
+.page-48 .lot-travel-card{width:291px;height:291px;border-radius:20px;}
+.page-48 .lot-travel-card>img{object-fit:fill!important;}
+/* 25: top cards #7~12 and bottom cards #1~6. Original step size = 320px. */
+.page-49 .lot-lifestyle-row{gap:30px;left:765px;top:165px;}
+.page-49 .lot-lifestyle-2{left:-513px;top:620px;}
+.page-49 .lot-ticker-card{width:290px;height:375px;overflow:hidden;border-radius:25px;background:transparent;flex:0 0 290px;}
+.page-49 .lot-ticker-card>.figma-image{width:290px!important;height:375px!important;object-fit:fill!important;}
+@keyframes lot-row-a {0%{transform:translateX(0)}13.889%{transform:translateX(-320px)}27.778%{transform:translateX(-640px)}41.667%{transform:translateX(-960px)}55.556%{transform:translateX(-1280px)}69.444%{transform:translateX(-1600px)}83.333%,100%{transform:translateX(-1920px)}}
+@keyframes lot-row-b {0%{transform:translateX(0)}13.889%{transform:translateX(320px)}27.778%{transform:translateX(640px)}41.667%{transform:translateX(960px)}55.556%{transform:translateX(1280px)}69.444%{transform:translateX(1600px)}83.333%,100%{transform:translateX(1920px)}}
+/* 26: complete phone image from Figma x=696, y=259, 511×821. */
+.page-50 .lot-vehicle-phone{left:696px;top:259px;width:511px;height:821px;border-radius:0;overflow:hidden;background:transparent;box-shadow:none;}
+.page-50 .lot-vehicle-phone>img{width:100%;height:100%;object-fit:fill!important;}
+/* 28: Figma phone is one photograph with the hand. */
+
+
+
+
+
+
+
+
+
+
+
+/* 32: preserve original rotated cards and the two-layer Figma shadows. */
+
+
+
+
+
+/* Page 34 is a single full-bleed source image plus the original independent metadata texts. */
+.page-03 .new-cover-bg>img{object-fit:fill!important;}
+
+
+/* ===== Figma reconciliation: page-08 and page-35..54 (2026-11-18) ===== */
+.figma-fidelity-image{position:absolute;overflow:hidden;display:block;}
+.figma-fidelity-image>img{width:100%;height:100%;object-fit:cover!important;display:block;}
+/* 08: character GIFs and 4 separate source image layers. */
+.page-32 .stage{background:#fefefe;}
+.page-32 .p08-fidelity-description{z-index:5;}
+.page-32 .p08-brush{z-index:0;pointer-events:none;}
+.page-32 .p08-fidelity-character{position:absolute;z-index:2;}
+.page-32 .p08-fidelity-character img{display:block;width:100%!important;height:100%!important;object-fit:contain!important;}
+.page-32 .p08-name{z-index:3;pointer-events:none;}
+.page-32 .p08-name>img{object-fit:contain!important;}
+.page-32 .p08-fidelity-chips{position:absolute;display:flex;align-items:center;justify-content:center;gap:8px;height:40px;font:400 19.21px/1.1 var(--font-ko);white-space:nowrap;z-index:4;}
+.page-32 .p08-fidelity-chips span{display:inline-flex;align-items:center;justify-content:center;padding:0 13px;height:40px;border-radius:40px;}
+.page-32 .p08-solid span{background:var(--p08-accent);color:var(--p08-dark);}
+.page-32 .p08-outline span{border:1px solid var(--p08-accent);color:var(--p08-accent);}
+.page-32 .p08-dandi-solid, .page-32 .p08-dandi-outline{--p08-accent:#67b0fe;--p08-dark:#00448c;}
+.page-32 .p08-ddockdi-solid, .page-32 .p08-ddockdi-outline{--p08-accent:#0fc0ef;--p08-dark:#004972;}
+.page-32 .p08-woodi-solid, .page-32 .p08-woodi-outline{--p08-accent:#4ac34e;--p08-dark:#00301d;}
+/* 35: export of Figma's whole graphic, without re-adding duplicate callouts. */
+.page-04 .stage{background:#f6fbff;}
+.page-04 .p35-fullbleed{z-index:0;}
+.page-04 .new-description{z-index:6;}
+/* 37: the logo is a real bitmap image 433x181 in Figma. */
+.page-06 .stage{background:#f5faff;}
+.page-06 .p37-actual-logo{z-index:2;}
+.page-06 .p37-color-figma{border-radius:27px;}
+.page-06 .p37-color-figma b{font-size:18px;}
+/* 39: source artboard is 3240px high; the existing auto-scaler respects data-design-height. */
+.page-08 .stage{background:#f7f9fd;}
+.page-08 .p39-tall-photo{border-radius:30px;}
+.page-08 .p39-tall-photo>img{object-fit:cover!important;}
+.page-08 .p39-event-title{position:absolute;left:100px;top:1767px;font:650 20px/1.25 var(--font-ko);letter-spacing:-.4px;color:#0369f1;}
+/* 40: Instagram ad mockup with a single tall feed image behind the phone. */
+.page-09 .stage{background:#f7f9fd;}
+.page-09 .p40-display-title{position:absolute;left:100px;top:100px;color:#0369f1;font:650 20px/1.25 var(--font-ko);z-index:5;}
+.page-09 .p40-ad-tile{border-radius:28px;box-shadow:0 0 10px rgba(163,200,253,.6);z-index:1;}
+.page-09 .p40-content-window{position:absolute;left:717px;top:188px;width:487px;height:1046px;overflow:hidden;z-index:3;border-radius:42px;}
+.page-09 .p40-content-img{width:487px!important;height:3499px!important;max-width:none;object-fit:fill!important;transform:translateY(0);}
+.page-09.is-in-view .p40-content-img{animation:p40-content-scroll 7.5s ease-in-out infinite;}
+@keyframes p40-content-scroll{0%,12%{transform:translateY(0)}78%,88%{transform:translateY(-2453px)}100%{transform:translateY(0)}}
+.page-09 .p40-phone-overlay{z-index:4;pointer-events:none;}
+.page-09 .p40-phone-overlay img{object-fit:fill!important;}
+/* 41: Binggrae's cover image, at its new page number. */
+
+
+
+/* 42: the three circle images are the SAME Figma image fill and use one file. */
+
+
+
+
+
+/* 43: two logo-board images + two logo raster assets and the 5 source swatches. */
+
+
+
+
+
+/* 44–49: actual source images and descriptions, not previous incorrectly shifted pages. */
+
+
+
+
+
+
+
+
+/* 50: source 3D character + 2D model + 8 illustrations, with native background tiles. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 52: the actual source is a video fill. */
+
+
+/* 53: branding index reuses verified 4s reel classes, now under its current page number. */
+
+
+
+
+
+
+
+
+
+/* 54: the live Figma page is the BPT cover and starts the next project. */
+.page-16 .stage{background:#030303;}
+.page-16 .p54-bpt-cover{inset:0;z-index:0;}
+.page-16 .scene-cover-copy{position:absolute;inset:0;z-index:3;}
+@media(prefers-reduced-motion:reduce){.page-09.is-in-view .p40-content-img{animation:none!important;}}
+
+
+/* PAGE 51 — exact Figma 1920 x 1080 source frame 3527:10759.
+   Dedicated styling intentionally overrides obsolete page-51 placeholder rules. */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================================================
+ * Figma-verified BPT project: pages 55–60, 2026-11-18.
+ * All coordinates use the existing 1920 × 1080 stage.  No
+ * viewport-relative positioning within the artboard.
+ * ============================================================ */
+.figma-bpt-aligned>.stage{overflow:hidden;isolation:isolate;}
+.f55-stage, .f56-stage, .f58-stage{background:#030303!important;}
+.f57-stage{background:#f1e8f1!important;}
+.f59-stage, .f60-stage{background:#fff!important;}
+
+/* PAGE 55 — three Figma glass bubbles, connectors and blue light */
+.f55-glow{position:absolute;left:617px;top:222px;width:485px;height:485px;pointer-events:none;border-radius:50%;transform:rotate(45deg);opacity:.88;filter:blur(82.9px);background:radial-gradient(circle at center,rgba(2,92,255,0) 0%,rgba(2,92,255,.3) 27%,rgba(2,92,255,1) 76%,rgba(2,92,255,0) 100%);}
+.f55-bubble{position:absolute;width:310px;height:310px;border-radius:50%;z-index:1;pointer-events:none;border:1px solid rgba(255,255,255,.28);background:linear-gradient(130deg,rgba(255,255,255,.13),rgba(255,255,255,.025) 65%,rgba(0,0,0,.08)),rgba(48,48,48,.65);box-shadow:inset -65px -20px 110px -70px rgba(2,92,255,.72);backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);}
+.f55-bubble-first{left:503px;top:318px;}.f55-bubble-second{left:1107px;top:318px;}.f55-bubble-third{left:805px;top:675px;}
+.f55-bubble-label{position:absolute;z-index:3;width:310px;height:310px;display:block;padding-top:105px;text-align:center;color:#fff;font:400 22px/1.5 var(--font-ko);letter-spacing:-.88px;white-space:normal;}
+.f55-bubble-label-first{left:503px;top:318px;}.f55-bubble-label-second{left:1107px;top:318px;}.f55-bubble-label-third{left:805px;top:675px;}
+.f55-bubble-label b{font-weight:700;}
+.f55-connect{position:absolute;z-index:2;pointer-events:none;background:rgba(132,171,255,.72);transform-origin:left center;}
+.f55-connect-left{left:805px;top:521px;width:90px;height:1px;transform:rotate(14.808deg);}
+.f55-connect-right{left:1028px;top:521px;width:90px;height:1px;transform:rotate(165.192deg);}
+.f55-connect-down{left:960px;top:611px;width:1px;height:64px;}
+.f55-central-label{position:absolute;z-index:4;left:904px;top:539px;width:113px;color:#fff;font:600 20px/1.25 var(--font-ko);letter-spacing:-.4px;text-align:center;}
+.f55-description{grid-template-columns:665px 943px!important;gap:35px!important;z-index:8!important;}
+
+/* PAGE 56 — source photos and individual directional overlays */
+.f56-art{position:absolute;overflow:hidden;pointer-events:none;z-index:1;}
+.f56-art img{display:block;position:absolute;object-fit:cover;width:100%;height:100%;}
+.f56-art-left{left:0;top:377px;width:624px;height:703px;}
+.f56-art-middle{left:648px;top:377px;width:624px;height:703px;}
+.f56-art-middle img{width:703px;height:624px;left:624px;top:0;transform-origin:top left;transform:rotate(90deg);}
+.f56-art-right{left:1296px;top:377px;width:624px;height:703px;}
+.f56-art-left:after, .f56-art-right:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 59%,rgba(0,0,0,.65) 76%,#000 90%);}
+.f56-art-middle:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 56%,rgba(0,0,0,.84) 84%,#000 98%);}
+.f56-heading{position:absolute;z-index:3;color:#fff;font-family:var(--font-ko);width:425px;}
+.f56-heading-first{left:110px;}.f56-heading-middle{left:750px;}.f56-heading-last{left:1390px;}
+.f56-heading>span{position:absolute;top:553px;left:0;font:400 16px/1.3 var(--font-ko);letter-spacing:-.64px;white-space:nowrap;}
+.f56-heading>strong{position:absolute;top:601px;left:0;font:800 28px/1.4 "SUIT Variable","SUIT",var(--font-ko);letter-spacing:-1.12px;white-space:nowrap;}
+.f56-heading>p{position:absolute;top:877px;left:0;font:500 18px/1.7 var(--font-ko);letter-spacing:-.72px;white-space:nowrap;}
+.f56-description{grid-template-columns:761px 924px!important;gap:35px!important;z-index:5!important;}
+
+/* PAGE 57 — Figma original full-screen image plus independent B vector */
+.f57-background, .f59-background, .f60-background{position:absolute;inset:0;width:1920px;height:1080px;object-fit:cover;display:block;}
+.f57-symbol{position:absolute;left:838.67px;top:409.33px;width:241.79px;height:237.28px;object-fit:contain;display:block;}
+
+/* PAGE 58 — logo comparison sourced from Figma's actual image layer names */
+.f58-base{position:absolute;left:0;top:453px;width:1920px;height:627px;object-fit:cover;display:block;}
+.f58-previous-logo{position:absolute;left:364.63px;top:34.29px;width:330.46px;height:127.2px;object-fit:contain;display:block;}
+.f58-new-logo{position:absolute;left:831px;top:48px;width:259px;height:116px;object-fit:contain;display:block;}
+.f58-3d-logo{position:absolute;left:1273px;top:-49px;width:315.2px;height:315.2px;object-fit:contain;display:block;}
+.f58-divider{position:absolute;left:310.81px;top:242.27px;width:1298.33px;height:1px;background:#696969;}
+.f58-label{position:absolute;top:259px;font:500 16px/1.3 var(--font-ko);color:#b1b1b1;letter-spacing:-.32px;white-space:nowrap;}
+.f58-label-first{left:310.81px;}.f58-label-second{left:911.29px;}.f58-label-third{left:1511px;}
+
+/* PAGE 59 — artwork is raster; source typography and tags remain editable */
+.f59-description{grid-template-columns:665px 953px!important;gap:35px!important;z-index:4!important;}
+.f59-tags{position:absolute;z-index:4;display:flex;flex-wrap:wrap;align-content:flex-start;gap:12px 14px;}
+.f59-tags-left{left:200px;top:414px;width:310px;}.f59-tags-right{left:1365px;top:728px;width:370px;}
+.f59-tags span{display:inline-flex;align-items:center;justify-content:center;min-height:40px;border:1.5px solid #005cff;border-radius:50px;color:#005cff;padding:7px 20px;font:400 18px/1.3 var(--font-ko);letter-spacing:-.36px;white-space:nowrap;}
+.f59-tags-right span{background:#005cff;color:white;}
+
+
+/* =======================================================================
+ * 2026-11-18: Figma source verification for pages 56–59, 61–65.
+ * All values are original 1920×1080 design coordinates; parent stage scales.
+ * Page 56 and 58 source-asset markup is deliberately preserved.
+ * ======================================================================= */
+.page-18 .f56-heading{ top:0; }
+.page-19.figma-bpt-56to65>.stage, .page-26.figma-bpt-56to65>.stage{ background:#030303!important; }
+.page-27.figma-bpt-56to65>.stage{ background:#787878!important; }
+.page-21.figma-bpt-56to65>.stage, .page-23.figma-bpt-56to65>.stage{ background:#fff!important; }
+.page-24.figma-bpt-56to65>.stage{ background:#f1e8f1!important; }
+.page-25.figma-bpt-56to65>.stage{ background:#030303!important; }
+.figma-bpt-56to65>.stage{overflow:hidden;isolation:isolate;}
+.figma-bpt-56to65 .bpt-full-video{
+  position:absolute;inset:0;width:1920px;height:1080px;display:block;
+  object-fit:cover;object-position:center center;background:#030303;
+}
+.figma-bpt-56to65 .bpt-source-image{
+  position:absolute;display:block;max-width:none;object-fit:fill;
+  pointer-events:none;z-index:1;
+}
+.page-21 .bpt59-heading, .page-23 .bpt61-section-title, .page-25 .bpt63-section-title{
+  position:absolute;top:100px;left:100px;margin:0;
+  font:600 20px/1.25 var(--font-ko);letter-spacing:-.4px;
+  text-transform:uppercase;z-index:4;
+}
+.page-21 .bpt59-heading, .page-23 .bpt61-section-title{color:#1d1d1d;}
+.page-25 .bpt63-section-title{color:#fff;}
+.page-21 .bpt59-description{
+  position:absolute;left:800px;top:100px;width:953px;margin:0;
+  font:400 16px/1.7 var(--font-ko);color:#3e3e3e;letter-spacing:-.64px;
+  z-index:4;
+}
+.page-21 .bpt59-tag{
+  position:absolute;z-index:5;display:inline-flex;align-items:center;justify-content:center;
+  border-radius:49.935px;min-height:40.327px;box-sizing:border-box;
+  padding:0 20px;border:1.498px solid #005cff;
+  font:400 17.998px/1.3 var(--font-ko);letter-spacing:-.36px;white-space:nowrap;
+}
+.page-21 .bpt59-tag-outline{color:#005cff;background:transparent;}
+.page-21 .bpt59-tag-filled{background:#005cff;color:#fff;}
+.page-23 .bpt61-elbow{
+  position:absolute;left:207px;top:413px;width:227px;height:151px;
+  border-left:1.5px solid #292929;border-bottom:1.5px solid #292929;
+  box-sizing:border-box;z-index:2;pointer-events:none;
+}
+.page-23 .bpt61-image{z-index:3;}
+.page-23 .bpt61-image-1{z-index:1;}
+.page-23 .bpt61-image-2{z-index:4;}
+.page-23 .bpt61-icon-label{
+  position:absolute;font:600 16px/1.3 "SUIT Variable","SUIT",var(--font-ko);
+  color:#2c2c2c;letter-spacing:-.32px;white-space:nowrap;z-index:4;
+}
+.page-24 .bpt62-image{object-fit:cover;}
+.page-25 .bpt63-label{
+  position:absolute;color:#fff;font:400 19.7px/1.3 "SUIT Variable","SUIT",var(--font-ko);
+  letter-spacing:-.394px;white-space:nowrap;z-index:4;
+}
+
+
+/* ===== 2026-11-18 / requested Figma media and motion fixes ===== */
+/* Video fills: default background is transparent; the old Figma still remains visible
+   unless a video/GIF successfully loads. Geometry always follows the 1920px stage. */
+.portfolio-page .portfolio-media-slot{
+  position:absolute;left:0;top:0;width:1920px;height:1080px;
+  z-index:1;overflow:hidden;pointer-events:none;
+}
+.portfolio-page .portfolio-media-slot video, .portfolio-page .portfolio-media-slot img{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:cover;object-position:center;background:transparent;
+}
+.portfolio-page .portfolio-media-slot video{opacity:0;}
+.portfolio-page .portfolio-media-slot.is-media-ready video, .portfolio-page .portfolio-media-slot.is-media-ready img{opacity:1;}
+.page-05 .new-description{z-index:5;position:absolute;}
+.page-07 .portfolio-media-slot{z-index:1;}
+
+/* page-08: three figures stay visible as still first frames, with only the active
+   one animated; exact GIF timing is parsed from its Graphic Control Extensions. */
+.page-32 .p08-fidelity-character{isolation:isolate;}
+.page-32 .p08-fidelity-character .p08-gif-poster{
+  position:absolute;inset:0;display:block;width:100%;height:100%;
+  object-fit:contain;z-index:1;pointer-events:none;
+}
+.page-32 .p08-fidelity-character img[data-sequence-gif]{position:relative;z-index:2;}
+.page-32 .p08-fidelity-character:not(.is-gif-active) img[data-sequence-gif]{visibility:hidden;}
+.page-32 .p08-fidelity-character.is-gif-active img[data-sequence-gif]{visibility:visible;}
+/* page20: stop conflicting .is-in-view observers from holding the wipe on frame 1.
+   The dedicated observer toggles only .is-wipe-playing. */
+.page-44 .lot-message-2, .page-44 .lot-message-3{animation:none!important;}
+.page-44.is-wipe-playing .lot-message-2{animation:lot-wipe-2 6s linear infinite!important;}
+.page-44.is-wipe-playing .lot-message-3{animation:lot-wipe-3 6s linear infinite!important;}
+.page-44 .lot-message img{object-fit:fill!important;}
+/* page28: fill rectangle for the source image, not a manually recreated 650 square. */
+
+
+
+/* page50: maintain exactly two Figma text lines without browser-induced wrapping.
+   A horizontally compressed text layer has the original 704px visual slot. */
+
+
+
+
+
+/* Page51: retain Figma composition; clickable control is compact and off the artwork. */
+
+
+
+/* page55: original Figma glow image under the three CSS glass circles. */
+.page-17 .f55-source-glow{position:absolute;left:632px;top:237px;width:655px;height:655px;object-fit:fill;z-index:0;pointer-events:none;}
+.page-17.has-f55-source .f55-glow{opacity:0;}
+/* page58: Figma image fills use FILL, not CONTAIN. */
+.page-20 .f58-base, .page-20 .f58-previous-logo, .page-20 .f58-new-logo, .page-20 .f58-3d-logo{object-fit:cover!important;object-position:center!important;}
+
+
+/* ===== 2026-11-18 · Verified corrective patch: 08 / 20 / 34 / 50 / 55 / 58 ===== */
+/* No fake 'download-assets.bat' warning: media can play correctly even if an
+   optional source-image poster is not installed. Keep broken image icons hidden. */
+.work-page[data-missing-assets="true"]::after{ content:none!important;display:none!important; }
+
+/* PAGE 20: Figma 6s diagonal wipes, including transition 3 -> 1.
+   Original masks move from X=0 to X=2527 at 26.667–33.333%, 60–66.667%,
+   and 93–98% of the timeline. The animation works without JS view classes. */
+.page-44 .lot-message-2, .page-44 .lot-message-3, .page-44 .lot-message-4{ clip-path: polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);will-change:clip-path; }
+.page-44 .lot-message-2{animation:p20-diagonal-2 6s linear infinite!important;}
+.page-44 .lot-message-3{animation:p20-diagonal-3 6s linear infinite!important;}
+.page-44 .lot-message-4{animation:p20-diagonal-4 6s linear infinite!important;}
+/* Older rules set animation:none!important; these selectors explicitly override. */
+.page-44 .lot-message img{object-fit:fill!important;}
+@keyframes p20-diagonal-2 {
+  0%,26.667% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);animation-timing-function:ease-in-out;}
+  33.333%,98% {clip-path:polygon(0 0,140% 0,120% 100%,0 100%);}
+  99.667%,100% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);}
+}
+@keyframes p20-diagonal-3 {
+  0%,60% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);animation-timing-function:ease-in-out;}
+  66.667%,98% {clip-path:polygon(0 0,140% 0,120% 100%,0 100%);}
+  99.667%,100% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);}
+}
+@keyframes p20-diagonal-4 {
+  0%,93% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);animation-timing-function:ease-in-out;}
+  98%,99.667% {clip-path:polygon(0 0,140% 0,120% 100%,0 100%);}
+  100% {clip-path:polygon(-30% 0,-20% 0,-40% 100%,-50% 100%);}
+}
+/* User explicitly requested this motion; avoid a system reduced-motion override
+   silently turning this ONE portfolio showcase into a static frame. */
+@media (prefers-reduced-motion:reduce) {
+  .page-44 .lot-message-2, .page-44 .lot-message-3, .page-44 .lot-message-4{
+    animation-duration:6s!important;animation-iteration-count:infinite!important;
+  }
+}
+
+/* PAGE 50: EXACT original Pretendard type. Remove previous scaleX(.80457),
+   which physically compressed all letterforms and was not in the Figma file. */
+
+
+
+
+
+
+
+
+/* PAGE 55: restore black Figma background, original circular glass weights,
+   line endpoints and exact copy alignment. Glow image page-55.png is already
+   mapped to original Figma layer x632 y237 w655 h655. */
+.page-17 .f55-stage{background:#030303!important;}
+.page-17 .f55-glow{left:632px;top:237px;width:655px;height:655px;
+  transform:none;opacity:.82;filter:blur(37px);
+  background:radial-gradient(circle at 50% 48%,rgba(0,84,250,.88) 0%,rgba(0,84,250,.55) 31%,rgba(0,84,250,.18) 52%,transparent 76%);
+}
+.page-17 .f55-bubble{
+  width:310px;height:310px;border:1px solid rgba(225,234,255,.35);
+  background:radial-gradient(circle at 80% 74%,rgba(0,93,255,.32) 0%,transparent 48%),
+             linear-gradient(145deg,rgba(67,67,67,.88) 0%,rgba(43,43,43,.88) 64%,rgba(34,34,34,.9) 100%);
+  box-shadow:inset 0 0 2px rgba(255,255,255,.19);
+  backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px);
+}
+.page-17 .f55-bubble-label{padding-top:117px;font:400 22px/1.5 var(--font-ko);letter-spacing:-.88px;}
+.page-17 .f55-bubble-label b{font-weight:700;}
+.page-17 .f55-source-glow{left:632px;top:237px;width:655px;height:655px;object-fit:cover;}
+
+/* PAGE 58: these are individual Figma image FILL rectangles. The generic
+   '.work-page .figma-image{width:100%;height:100%}' had overridden their sizes. */
+.page-20 img.f58-base{position:absolute!important;left:0!important;top:453px!important;width:1920px!important;height:627px!important;object-fit:cover!important;max-width:none!important;z-index:1;}
+.page-20 img.f58-previous-logo{position:absolute!important;left:364.63px!important;top:34.29px!important;width:330.46px!important;height:127.2px!important;object-fit:cover!important;max-width:none!important;z-index:2;}
+.page-20 img.f58-new-logo{position:absolute!important;left:831px!important;top:48px!important;width:259px!important;height:116px!important;object-fit:cover!important;max-width:none!important;z-index:2;}
+.page-20 img.f58-3d-logo{position:absolute!important;left:1273px!important;top:-49px!important;width:315.2px!important;height:315.2px!important;object-fit:cover!important;max-width:none!important;z-index:2;}
+.page-20 .f58-divider, .page-20 .f58-label{z-index:3;}
+
+
+/* ============================================================
+  FIGMA FIDELITY — PAGES 66–81 (source design: 1920×1080)
+  Scoped to requested pages; no existing 01–65 or 82–83 styles changed.
+  Values are design-space pixels; outer .stage uses existing width scaling.
+============================================================ */
+.figma-sequence-page .stage{overflow:hidden;position:relative;}
+.figma-sequence-page .stage *, .figma-sequence-page .stage *::before, .figma-sequence-page .stage *::after{box-sizing:border-box;}
+.figma-sequence-page .f7-asset{position:absolute;margin:0;}
+.figma-sequence-page .f7-img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;}
+.figma-sequence-page .f7-fill .f7-img, .figma-sequence-page .f7-cover .f7-img, .figma-sequence-page .f7-collage .f7-img{object-fit:cover;}
+.figma-sequence-page .f7-img.is-missing{visibility:hidden;}
+.figma-sequence-page .f7-text{position:absolute;margin:0;z-index:6;}
+.figma-sequence-page .f7-section-title{font:600 20px/1.25 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.4px;color:#fff;white-space:nowrap;}
+.figma-sequence-page .f7-cover-copy{position:absolute;inset:0;color:white;pointer-events:none;}
+.figma-sequence-page .f7-cover-title{position:absolute;left:100px;top:100px;display:flex;flex-direction:column;gap:8px;white-space:nowrap;}
+.figma-sequence-page .f7-cover-title span{font:600 20px/1.25 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.4px;}
+.figma-sequence-page .f7-cover-title strong{font:600 25px/1.25 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.5px;}
+.figma-sequence-page .f7-cover-facts{position:absolute;top:100px;left:1188px;display:grid;grid-template-columns:217px 218px 240px;}
+.figma-sequence-page .f7-cover-facts>div{display:flex;flex-direction:column;gap:13px;}
+.figma-sequence-page .f7-cover-facts b{font:600 18px/1.25 var(--font-ko,"Pretendard",sans-serif);}
+.figma-sequence-page .f7-cover-facts span{font:300 16px/1.3 var(--font-ko,"Pretendard",sans-serif);white-space:nowrap;letter-spacing:-.32px;}
+.figma-sequence-page .f7-desc{position:absolute;left:100px;top:100px;display:grid;grid-template-columns:665px 955px;column-gap:35px;z-index:5;color:#fff;}
+.figma-sequence-page .f7-desc h2{font:600 20px/1.25 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.4px;margin:0;text-transform:uppercase;color:#fff;}
+.figma-sequence-page .f7-desc p{font:400 16px/1.7 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.64px;margin:0;color:#fff;}
+.page-52.figma-sequence-page .f7-issue{position:absolute;color:#000;z-index:3;font:400 20px/1.3 var(--font-ko,"Pretendard",sans-serif);white-space:nowrap;}
+.page-52.figma-sequence-page .f7-issue span, .page-52.figma-sequence-page .f7-issue p{display:table;width:max-content;max-width:400px;background:#e32626;padding:4px 9px;margin:0 0 6px 0;}
+.page-52.figma-sequence-page .f7-issue span{font:600 18px/1.3 var(--font-ko,"Pretendard",sans-serif);}
+.page-53.figma-sequence-page .f7-red-tag{background:#e32626;color:#000;font:700 22px/1.5 var(--font-ko,"Pretendard",sans-serif);padding:0 14px;transform:rotate(-3deg);}
+.page-53.figma-sequence-page .f7-goal-text{color:white;font:400 18px/1.7 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.72px;text-align:center;}
+.page-53.figma-sequence-page .f7-goal-label{color:#f72c2c;font:600 22px/1.25 var(--font-ko,"Pretendard",sans-serif);}
+.page-53.figma-sequence-page .f7-goal-target{color:white;font:400 30px/1.4 var(--font-ko,"Pretendard",sans-serif);text-align:center;letter-spacing:-1.2px;}
+.page-53.figma-sequence-page .f7-goal-target strong{font-weight:700;}
+.page-55.figma-sequence-page .f7-type-annotation, .page-56.figma-sequence-page .f7-type-annotation{font:500 18px/1.25 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.36px;white-space:nowrap;}
+.page-55.figma-sequence-page .f7-type-annotation.red{color:#e00100;}.page-55.figma-sequence-page .f7-type-annotation.white, .page-56.figma-sequence-page .f7-type-annotation.white{color:#fff;}
+.page-56.figma-sequence-page .f7-type-sample{color:#999;font-size:20px;line-height:1.2;white-space:nowrap;letter-spacing:-.6px;}
+.page-56.figma-sequence-page .f7-league{font-family:"League Gothic","Impact",sans-serif;letter-spacing:.6px;}
+.page-56.figma-sequence-page .f7-pragati{font-family:"Pragati Narrow","Arial Narrow",sans-serif;letter-spacing:-.6px;}
+.page-56.figma-sequence-page .f7-swatch{position:absolute;}
+.page-56.figma-sequence-page .f7-swatch-image{z-index:2;}
+.page-56.figma-sequence-page .f7-swatch-label{font-family:"League Gothic","Impact",sans-serif;font-size:24px;line-height:1.3;z-index:3;}
+.page-56.figma-sequence-page .f7-swatch-label small{display:block;font:300 10px/1.45 var(--font-ko,"Pretendard",sans-serif);margin-top:6px;}
+.page-57.figma-sequence-page .f7-ingredient-name{font:400 60px/1.25 "League Gothic","Impact","Arial Narrow",sans-serif;text-transform:uppercase;color:white;letter-spacing:-2px;white-space:nowrap;text-align:center;z-index:7;}
+.page-58.figma-sequence-page .f7-rule{position:absolute;background:#fff;z-index:7;pointer-events:none;}
+.page-58.figma-sequence-page .f7-p73-label{font:400 25px/1.25 "League Gothic","Impact",sans-serif;color:#fff;white-space:nowrap;z-index:8;}
+.page-58.figma-sequence-page .f7-p73-copy{font:300 16px/1.8 var(--font-ko,"Pretendard",sans-serif);letter-spacing:-.64px;color:#fff;white-space:nowrap;z-index:8;}
+/* Figma page-73: four layered package compositions, eight-second timeline */
+.page-58.is-in-view .f7-frame-1{animation:f7-p73-a 8s linear infinite;}
+.page-58.is-in-view .f7-frame-2{animation:f7-p73-b 8s linear infinite;}
+.page-58.is-in-view .f7-frame-3{animation:f7-p73-c 8s linear infinite;}
+.page-58.is-in-view .f7-frame-4{animation:f7-p73-d 8s linear infinite;}
+@keyframes f7-p73-a{0%,12.304%{opacity:1}12.442%,49.155%{opacity:0}49.913%,62.613%{opacity:1}62.887%,100%{opacity:0}}
+@keyframes f7-p73-b{0%,25.009%{opacity:1}25.104%,61.928%{opacity:0}62.513%,75.113%{opacity:1}75.275%,100%{opacity:0}}
+@keyframes f7-p73-c{0%,37.47%{opacity:1}37.62%,75.113%{opacity:0}75.238%,87.338%{opacity:1}87.538%,100%{opacity:0}}
+@keyframes f7-p73-d{0%,49.816%{opacity:1}50.019%,87.338%{opacity:0}87.538%,100%{opacity:1}}
+/* Figma page-75: two-image composited alternating scene, five seconds */
+.page-60.is-in-view .f7-frame-1{animation:f7-p75 5s linear infinite;}
+@keyframes f7-p75{0%,38%{opacity:1}44%,93%{opacity:0}100%{opacity:1}}
+/* Figma page-80: four-image sequence, 1s intervals / 4s loop */
+.page-65.is-in-view .f7-frame-1{animation:f7-p80-1 4s linear infinite;}
+.page-65.is-in-view .f7-frame-2{animation:f7-p80-2 4s linear infinite;}
+.page-65.is-in-view .f7-frame-3{animation:f7-p80-3 4s linear infinite;}
+@keyframes f7-p80-1{0%,24.962%{opacity:1}25.051%,100%{opacity:0}}
+@keyframes f7-p80-2{0%,49.979%{opacity:1}50.079%,100%{opacity:0}}
+@keyframes f7-p80-3{0%,74.973%{opacity:1}75.073%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.page-58.figma-sequence-page .f7-asset, .page-60.figma-sequence-page .f7-asset, .page-65.figma-sequence-page .f7-asset{animation:none!important;}}
+
+
+/* ============================================================
+  2026-11-18 · Verified follow-up: pages 02,08,20,55,71,77
+  Coordinates are in original Figma 1920px artboard; global stage scaling remains.
+============================================================ */
+/* page 02: source English headline y=300, Korean block y=346 (not y=364). */
+#page-02 .introduce-statement{left:100px;top:300px;}
+#page-02 .introduce-statement h3{
+  font-family:"Fustat",var(--font-latin);font-size:30px;line-height:39px;
+  font-weight:800;letter-spacing:-1.2px;margin:0 0 7px;
+}
+#page-02 .introduce-statement p{
+  font-family:"Fustat",var(--font-ko);font-size:28px;line-height:42px;
+  font-weight:600;letter-spacing:-1.12px;margin:0;
+}
+/* page 08: static snapshot is ONLY for INACTIVE character. Never overprint a
+   playing transparent GIF with a second identical bitmap. GIF timing untouched. */
+#page-32 .p08-fidelity-character.is-gif-active>.p08-gif-poster{
+  display:none!important;visibility:hidden!important;opacity:0!important;
+}
+#page-32 .p08-fidelity-character:not(.is-gif-active)>.p08-gif-poster{
+  display:block;visibility:visible;opacity:1;
+}
+/* page 20: supersede legacy circular / diagonal keyframe rules. The scripted
+   Web Animations API owns clipping & endlessly repeats the Figma 6s timeline. */
+#page-44 .lot-message-2, #page-44 .lot-message-3, #page-44 .lot-message-4{
+  animation:none!important;
+  clip-path:polygon(-50% 0,-40% 0,-60% 100%,-70% 100%);
+  will-change:clip-path;
+}
+/* page 55: SVG paths follow the three exact Figma line rectangles. */
+#page-17 .f55-connectors-figma{
+  position:absolute;left:0;top:0;width:1920px;height:1080px;
+  z-index:2;overflow:visible;pointer-events:none;
+}
+#page-17 .f55-connect{display:none!important;}
+/* page 71: source color names use League Gothic Regular 24px. Previous <b>
+   created bold synthetic lettering, and Impact was a too-heavy fallback. */
+#page-56 .f7-swatch-label{font-family:"League Gothic","Arial Narrow","Liberation Sans Narrow",sans-serif;
+  font-size:24px;line-height:1.3;font-weight:400;letter-spacing:0;
+  font-synthesis:none;}
+#page-56 .f7-swatch-label .f7-color-name{
+  font-family:inherit;font-weight:400!important;font-style:normal;
+  letter-spacing:0;white-space:nowrap;display:inline-block;
+}
+/* page 77: Figma 5-second loop. Images pop in in the first 0.8s, hold,
+   then reset and loop. Each image preserves its own exact layer position. */
+#page-62 .f7-collage{transform-origin:center center;transform:scale(0);}
+#page-62.is-in-view .f7-collage[data-layer="page-77-1"]{animation:f77-a1 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-2"]{animation:f77-a2 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-3"]{animation:f77-a3 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-4"]{animation:f77-a4 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-5"]{animation:f77-a5 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-6"]{animation:f77-a6 5s linear infinite!important;}
+#page-62.is-in-view .f7-collage[data-layer="page-77-7"]{animation:f77-a7 5s linear infinite!important;}
+@keyframes f77-a1{0%,5.557%{transform:scale(0)}10.707%,100%{transform:scale(1)}}
+@keyframes f77-a2{0%,11.169%{transform:scale(0)}14.263%{transform:scale(1.05)}14.897%{transform:scale(.95)}16.067%,100%{transform:scale(1)}}
+@keyframes f77-a3{0%,9.066%{transform:scale(0)}12.689%,100%{transform:scale(1)}}
+@keyframes f77-a4{0%,3.064%{transform:scale(0)}7.460%,100%{transform:scale(1)}}
+@keyframes f77-a5{0%,1.380%{transform:scale(0)}4.605%,100%{transform:scale(1)}}
+@keyframes f77-a6{0%,5.222%{transform:scale(0)}9.366%,100%{transform:scale(1)}}
+@keyframes f77-a7{0%,7.460%{transform:scale(0)}10.707%,100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){
+  /* Requested Figma sequence must remain animated even if a generic earlier
+     rule disables all motion on portfolio-extension pages. */
+  #page-62.is-in-view .f7-collage[data-layer="page-77-1"]{animation:f77-a1 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-2"]{animation:f77-a2 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-3"]{animation:f77-a3 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-4"]{animation:f77-a4 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-5"]{animation:f77-a5 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-6"]{animation:f77-a6 5s linear infinite!important;}
+  #page-62.is-in-view .f7-collage[data-layer="page-77-7"]{animation:f77-a7 5s linear infinite!important;}
+}
+
+
+/* PAGE 67 / Closing slide: Figma 3558:6315 (1920 × 1080).
+   Pixel coordinates are in the 1920px design stage, scaled by the site's
+   existing --artboard-scale logic. No images or script changes are needed. */
+#page-67.page-closing, #page-67.page-closing > .closing-stage{
+  background: #f9f9f9;
+}
+#page-67 .closing-stage{
+  color: #030303;
+  font-family: var(--font-latin);
+}
+#page-67 .closing-name{
+  position: absolute;
+  left: 453.42px;
+  top: 335px;
+  width: 1013px;
+  white-space: nowrap;
+  font-family: "Fustat", Arial, sans-serif;
+  font-size: 123.068px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -3.692px;
+  color: #030303;
+  text-align: left;
+}
+#page-67 .closing-message{
+  position: absolute;
+  left: 761px;
+  top: 490px;
+  width: 398px;
+  white-space: nowrap;
+  font-family: "Fustat", var(--font-ko);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.51;
+  letter-spacing: -1.12px;
+  color: #acacac;
+  text-align: center;
+}
+#page-67 .closing-contact{
+  position: absolute;
+  top: 925px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font: 600 20px/1.3 "Fustat", Arial, sans-serif;
+  white-space: nowrap;
+}
+#page-67 .closing-contact-label{
+  color: #9c9c9c;
+}
+#page-67 .closing-contact a{
+  color: #030303;
+  text-decoration: none;
+}
+#page-67 .closing-contact a:hover, #page-67 .closing-contact a:focus-visible{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+#page-67 .closing-phone{
+  left: 100px;
+  align-items: flex-start;
+  text-align: left;
+}
+#page-67 .closing-email{
+  right: 100px;
+  align-items: flex-end;
+  text-align: right;
+}
+#page-67 .closing-portfolio{
+  position: absolute;
+  left: 823px;
+  top: 937px;
+  width: 274px;
+  font: 800 45px/1 "Fustat", Arial, sans-serif;
+  letter-spacing: -1.8px;
+  color: #030303;
+  white-space: nowrap;
+  text-align: center;
+}
+
+
+/* 상단 NAV */
+.top-nav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  z-index: 9999;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 40px;
+  padding: 0 60px;
+
+  background: rgba(249, 249, 249, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+/* HOME / CONTACT 버튼 */
+.top-nav a{
+  font-family: "Fustat", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #030303;
+  text-decoration: none;
   transition: opacity 0.2s ease;
 }
 
-/* 바로 다음 이미지에 마우스를 올리면 해당 번호 표시 */
-.page02-num:has(+ .page02-thumb:hover) {
-  opacity: 1;
-}
-
-/* 프로젝트명 */
-.page02-title {
-  top: 83.3333%; /* y: 900 */
-  color: #ffffff;
-}
-
-/* 설명 */
-.page02-desc {
-  top: 85.1852%; /* y: 920 */
-  color: #A3A3A3;
-}
-
-/* Page 02 하단 안내문구 */
-.page02-guide {
-  position: absolute;
-
-  left: 10.4167%;   /* 200 / 1920 */
-  bottom: 11.1111%; /* 120 / 1080 */
-
-  font-family: 'Pretendard', var(--font), sans-serif;
-  font-weight: 400; /* Pretendard Regular */
-
-  font-size: min(12px, 0.625cqw);
-
-  line-height: 1.4;
-  letter-spacing: 0;
-
-  color: #A3A3A3;
-
-  text-align: left;
-  white-space: nowrap;
-
-  z-index: 6;
+/* 마우스를 올렸을 때 */
+.top-nav a:hover{
+  opacity: 0.4;
 }
