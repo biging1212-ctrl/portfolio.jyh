@@ -122,99 +122,42 @@
   }));
 })();
 
-/* Media performance: preload near pages, play only on their visible section. */
+/* Background media: play muted videos only while their page is visible. */
 (() => {
-  const pages = [...document.querySelectorAll('.portfolio-page')];
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
-  // Eager-load ONLY the pages approaching the viewport. Distant images stay lazy.
-  // Native video preload="none" avoids sending all 67 pages' video requests at startup.
-  const preparePage = (page) => {
-    page.querySelectorAll('img[loading="lazy"]').forEach(img => {
-      img.loading = 'eager';
-    });
-    page.querySelectorAll('video[data-portfolio-video]').forEach(video => {
-      if (video.dataset.portfolioPrepared) return;
-      video.dataset.portfolioPrepared = 'true';
-      video.preload = 'auto';
-      video.load();
-    });
-  };
-
-  if ('IntersectionObserver' in window) {
-    const preloadObserver = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        preparePage(entry.target);
-        preloadObserver.unobserve(entry.target);
-      }
-    }, {rootMargin: '150% 0px 150% 0px', threshold: 0});
-    pages.forEach(p => preloadObserver.observe(p));
-  } else {
-    // Still avoid loading the entire portfolio in older browsers.
-    pages.slice(0, 3).forEach(preparePage);
-  }
-
-  // Control native videos by SECTION visibility, rather than by the video itself.
-  const sectionVideos = new Map();
-  document.querySelectorAll('video[data-portfolio-video]').forEach(video => {
-    video.autoplay = false;
-    video.removeAttribute('autoplay');
-    video.muted = true;
-    video.playsInline = true;
-    video.preload = 'none';
-    const page = video.closest('.portfolio-page');
-    if (!page) return;
-    if (!sectionVideos.has(page)) sectionVideos.set(page, []);
-    sectionVideos.get(page).push(video);
-    video.addEventListener('error', () => page.setAttribute('data-media-unavailable','true'));
-    video.addEventListener('canplay', () => page.removeAttribute('data-media-unavailable'));
+  const scenes = Array.from(document.querySelectorAll('.portfolio-extension'));
+  const videos = Array.from(document.querySelectorAll('.portfolio-extension video[data-portfolio-video], .page-46 video[data-portfolio-video]'));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const mediaObserver = ('IntersectionObserver' in window)
+    ? new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const vid = entry.target;
+          if (!entry.isIntersecting || reduceMotion.matches) {
+            vid.pause();
+          } else {
+            vid.play().catch(() => {}); // Some browsers restrict autoplay.
+          }
+        });
+      }, { threshold: 0.10 }) : null;
+  videos.forEach(v => {
+    v.muted = true; v.playsInline = true;
+    v.addEventListener('error', () => v.closest('.portfolio-extension, .page-46')?.setAttribute('data-media-unavailable','true'));
+    v.addEventListener('canplay', () => v.closest('.portfolio-extension, .page-46')?.removeAttribute('data-media-unavailable'));
+    if (mediaObserver) mediaObserver.observe(v);
   });
-
-  const setVideoVisible = (page, visible) => {
-    for (const video of (sectionVideos.get(page) || [])) {
-      if (!visible || reducedMotion.matches || document.hidden) {
-        video.pause();
-        if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-          try { video.currentTime = 0; } catch (_) {}
-        }
-        continue;
-      }
-      // On revisiting a page the video starts from the beginning, not halfway.
-      if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-        try { video.currentTime = 0; } catch (_) {}
-      }
-      const playPromise = video.play();
-      playPromise?.catch?.(() => {});
-    }
-  };
-  if ('IntersectionObserver' in window) {
-    const playbackObserver = new IntersectionObserver(entries => {
-      for (const entry of entries) setVideoVisible(entry.target, entry.isIntersecting);
-    }, {threshold: 0.12});
-    for (const page of sectionVideos.keys()) playbackObserver.observe(page);
-  } else {
-    for (const page of sectionVideos.keys()) setVideoVisible(page, false);
-  }
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      for (const page of sectionVideos.keys()) setVideoVisible(page, false);
-    }
-  });
-
-  // Preserve image-format fallback behavior from the supplied website.
-  for (const page of pages) {
-    if (!page.hasAttribute('data-media-only') && page.id !== 'page-60') continue;
-    page.querySelectorAll('.scene-media-cover:not(video)').forEach(img => {
-      const formats = (img.dataset.fallbackFormats || '').split(',').filter(Boolean);
-      img.addEventListener('error', () => {
-        if (formats.length) {
-          img.src = img.src.replace(/\.[a-z0-9]+(?:\?.*)?$/i, '.' + formats.shift());
-        } else page.setAttribute('data-media-unavailable', 'true');
+  scenes.forEach(section => {
+    if (section.hasAttribute('data-media-only') || section.id === 'page-60') {
+      section.querySelectorAll('.scene-media-cover:not(video)').forEach(img => {
+        let formats = (img.dataset.fallbackFormats || '').split(',').filter(Boolean);
+        img.addEventListener('error', () => {
+          if (formats.length) {
+            const next = formats.shift();
+            img.src = img.src.replace(/\.[a-z0-9]+(?:\?.*)?$/i, '.'+next);
+          } else section.setAttribute('data-media-unavailable', 'true');
+        });
+        img.addEventListener('load', () => section.removeAttribute('data-media-unavailable'));
       });
-      img.addEventListener('load', () => page.removeAttribute('data-media-unavailable'));
-    });
-  }
+    }
+  });
 })();
 
 /* ===== 2026-11-18 / GIF sequencing and background media loader ===== */
@@ -311,7 +254,7 @@
         };
         if (img.complete && img.naturalWidth) snapshot();
         else img.addEventListener('load', snapshot, { once: true });
-        entry.read = () => fetch(src, { cache: 'force-cache' })
+        entry.read = fetch(src, { cache: 'force-cache' })
           .then(resp => { if (!resp.ok) throw new Error('HTTP ' + resp.status); return resp.blob(); })
           .then(async blob => {
             const duration = gifDurationMs(await blob.arrayBuffer());
@@ -367,7 +310,7 @@
     }
     // Important: do NOT begin the first timer while the GIF file is still
     // downloading. That was why long GIFs got cut at 3 seconds.
-    const startGifPreload = () => Promise.all(entries.map(entry => entry.read())).then(results => {
+    Promise.all(entries.map(entry => entry.read)).then(results => {
       ready = results.length === 3 && results.every(Boolean);
       if (visible && ready) playCharacter(0);
       if (!ready) {
@@ -382,16 +325,6 @@
         }
       }
     });
-    // Download the GIFs only when the iM page is getting close.
-    if ('IntersectionObserver' in window) {
-      const gifPreloadObserver = new IntersectionObserver(entries => {
-        if (entries.some(entry => entry.isIntersecting)) {
-          gifPreloadObserver.disconnect();
-          startGifPreload();
-        }
-      }, {rootMargin: '150% 0px 150% 0px', threshold: 0});
-      gifPreloadObserver.observe(page32);
-    } else startGifPreload();
     watchSection(page32, on => {
       if (on === visible) return;
       visible = on;
@@ -416,7 +349,7 @@
     video.muted = true;
     video.autoplay = false;
     video.loop = true;
-    video.preload = 'none';
+    video.preload = 'metadata';
     let failedSources = 0;
     for (const [ext,type] of [['mp4','video/mp4'],['webm','video/webm']]) {
       const source = document.createElement('source');
@@ -456,20 +389,7 @@
     // A timeout also covers some browsers that only raise <source> error.
     video.addEventListener('stalled', () => { if (video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) gifFallback(); });
     watchSection(section, on => { visible = on; playOrPause(); });
-    const preloadSlotVideo = () => {
-      if (useGif || video.dataset.portfolioPrepared) return;
-      video.dataset.portfolioPrepared = 'true';
-      video.preload = 'auto';
-      video.load();
-    };
-    if ('IntersectionObserver' in window) {
-      const warmObserver = new IntersectionObserver(entries => {
-        if (!entries.some(entry => entry.isIntersecting)) return;
-        warmObserver.disconnect();
-        preloadSlotVideo();
-      }, {rootMargin: '150% 0px 150% 0px', threshold: 0});
-      warmObserver.observe(section || slot);
-    } else if (isVisible(section)) preloadSlotVideo();
+    video.load();
   });
 
 
@@ -534,24 +454,19 @@
     const animation = element.animate(keyframes,{
       duration:6000,iterations:Infinity,fill:'both',easing:'linear'
     });
-    animation.pause();
+    animation.play();
     activeWipes.push(animation);
   }
-  // Play Figma's six-second wipe only while the page is visible.
+  // Start a fresh Figma cycle whenever the visitor scrolls into page-44.
   if ('IntersectionObserver' in window && activeWipes.length) {
     const observer = new IntersectionObserver(([entry]) => {
-      activeWipes.forEach(animation => {
-        if (entry.isIntersecting && !document.hidden) {
-          animation.currentTime = 0;
-          animation.play();
-        } else {
-          animation.pause();
-          animation.currentTime = 0;
-        }
+      if (entry.isIntersecting) activeWipes.forEach(animation => {
+        animation.currentTime = 0;
+        animation.play();
       });
     }, {threshold:0.15});
     observer.observe(page);
-  } else if (activeWipes.length) activeWipes.forEach(animation => animation.play());
+  }
   page.dataset.wipeEngine = 'web-animations-6s-loop';
 })();
 
