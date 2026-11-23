@@ -562,9 +562,6 @@ button:focus-visible, a:focus-visible{
 .work-page .p05-ticker, .work-page .p10-slide{animation-play-state:paused;}
 .work-page.is-in-view .p05-ticker, .work-page.is-in-view .p10-slide{animation-play-state:running;}
 /* Preserve Figma's decorative SVG clip and ring assets when installed. */
-.p04-symbols .p04-arch{-webkit-mask-image:url("./assets/project01/image/p04-imgGroup.svg");mask-image:url("./assets/project01/image/p04-imgGroup.svg");-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;}
-.p05-goods, .p05-content{background-image:url("./assets/project01/image/p05-imgEllipse1806.svg");background-size:100% 100%;background-repeat:no-repeat;}
-.p05-center{background-image:url("./assets/project01/image/p05-imgEllipse1805.svg");background-size:100% 100%;background-repeat:no-repeat;}
 .preview-image.is-missing{visibility:hidden;}
 
 
