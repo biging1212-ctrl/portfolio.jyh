@@ -1739,11 +1739,34 @@ button:focus-visible, a:focus-visible{
 }
 /* page 20: supersede legacy circular / diagonal keyframe rules. The scripted
    Web Animations API owns clipping & endlessly repeats the Figma 6s timeline. */
-#page-44 .lot-message-2, #page-44 .lot-message-3, #page-44 .lot-message-4{
-  animation:none!important;
-  clip-path:polygon(-50% 0,-40% 0,-60% 100%,-70% 100%);
-  will-change:clip-path;
+
+/* PAGE 44 - 6초 이미지 전환 모션 */
+#page-44 .lot-message-2,
+#page-44 .lot-message-3,
+#page-44 .lot-message-4 {
+  animation: none !important;
+  clip-path: polygon(
+    -50% 0,
+    -40% 0,
+    -60% 100%,
+    -70% 100%
+  );
+  will-change: clip-path;
 }
+
+/* page-44가 화면에 들어왔을 때 재생 */
+#page-44.is-in-view .lot-message-2 {
+  animation: p20-diagonal-2 6s linear infinite !important;
+}
+
+#page-44.is-in-view .lot-message-3 {
+  animation: p20-diagonal-3 6s linear infinite !important;
+}
+
+#page-44.is-in-view .lot-message-4 {
+  animation: p20-diagonal-4 6s linear infinite !important;
+}
+
 /* page 55: SVG paths follow the three exact Figma line rectangles. */
 #page-17 .f55-connectors-figma{
   position:absolute;left:0;top:0;width:1920px;height:1080px;
