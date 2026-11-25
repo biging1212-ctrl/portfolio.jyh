@@ -474,3 +474,51 @@
 document.addEventListener("contextmenu", function (event) {
     event.preventDefault();
 });
+
+/* PROJECT 02 / Figma 3605:289—3616:576.
+   Begin preparing each image just before the reader reaches it; preserve all
+   source filenames and playback motion from the six Figma frames.
+   Missing PNGs are reported with the exact Figma layer name in DevTools. */
+(() => {
+  'use strict';
+  const images = [...document.querySelectorAll('.project02-campaign img[data-figma-layer]')];
+  if (!images.length) return;
+
+  const warm = img => {
+    // Preserve native async decode, but encourage the browser to fetch
+    // the next offscreen PNG early instead of waiting for the scroll edge.
+    img.loading = 'eager';
+  };
+
+  for (const image of images) {
+    const missing = () => {
+      const name = image.dataset.figmaLayer;
+      const src = image.getAttribute('src') || '';
+      console.warn(`[project02] 이미지 누락: ${name}.png | ${src} | Figma 레이어: ${image.dataset.figmaImageNode}`);
+    };
+    image.addEventListener('error', missing);
+    if (image.complete && !image.naturalWidth) missing();
+    image.addEventListener('load', () => image.classList.remove('is-missing'));
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        warm(entry.target);
+        observer.unobserve(entry.target);
+      }
+    }, {rootMargin:'800px 0px 800px 0px',threshold:0});
+    images.forEach(img => observer.observe(img));
+  } else images.forEach(warm);
+})();
+
+/* PAGE 02: reveal a neutral label if an original gallery PNG is not supplied. */
+(() => {
+  const thumbs = document.querySelectorAll('#page-02 .page02-gallery-item img');
+  thumbs.forEach(img => {
+    const missing = () => img.closest('.page02-gallery-item')?.classList.add('is-image-missing');
+    img.addEventListener('error', missing, {once:true});
+    if (img.complete && img.naturalWidth === 0) missing();
+  });
+})();
