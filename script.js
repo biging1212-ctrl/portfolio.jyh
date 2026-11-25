@@ -423,53 +423,6 @@
 })();
 
 
-/* PAGE 20 — isolate the Figma 6s wipe from overlapping historical CSS
-   animation rules. Web Animations API applies to the clip-path property,
-   loops indefinitely, and keeps the original image files and geometry. */
-(() => {
-  const page = document.getElementById('page-44');
-  if (!page) return;
-  const hidden = 'polygon(-50% 0%, -40% 0%, -60% 100%, -70% 100%)';
-  const shown = 'polygon(0% 0%, 145% 0%, 125% 100%, 0% 100%)';
-  const activeWipes = [];
-  const config = [
-    ['.lot-message-2', .26667, .33333, .98, .99667],
-    ['.lot-message-3', .60, .66667, .98, .99667],
-    ['.lot-message-4', .93, .98, .99667, 1],
-  ];
-  for (const [selector, hold, reveal, endHold, reset] of config) {
-    const element = page.querySelector(selector);
-    if (!element) continue;
-    element.style.setProperty('animation', 'none', 'important');
-    element.style.clipPath = hidden;
-    if (typeof element.animate !== 'function') continue;
-    const keyframes = [
-      {offset:0,clipPath:hidden},
-      {offset:hold,clipPath:hidden,easing:'ease-in-out'},
-      {offset:reveal,clipPath:shown},
-      {offset:endHold,clipPath:shown},
-    ];
-    if (reset<1) keyframes.push({offset:reset,clipPath:hidden});
-    keyframes.push({offset:1,clipPath:hidden});
-    const animation = element.animate(keyframes,{
-      duration:6000,iterations:Infinity,fill:'both',easing:'linear'
-    });
-    animation.play();
-    activeWipes.push(animation);
-  }
-  // Start a fresh Figma cycle whenever the visitor scrolls into page-44.
-  if ('IntersectionObserver' in window && activeWipes.length) {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) activeWipes.forEach(animation => {
-        animation.currentTime = 0;
-        animation.play();
-      });
-    }, {threshold:0.15});
-    observer.observe(page);
-  }
-  page.dataset.wipeEngine = 'web-animations-6s-loop';
-})();
-
 // 포트폴리오 전체 마우스 오른쪽 클릭 차단
 document.addEventListener("contextmenu", function (event) {
     event.preventDefault();
