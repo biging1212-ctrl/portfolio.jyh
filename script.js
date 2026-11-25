@@ -522,3 +522,34 @@ document.addEventListener("contextmenu", function (event) {
     if (img.complete && img.naturalWidth === 0) missing();
   });
 })();
+
+/* PAGE 01 — Type only the short English statement, not the large name.
+   Text stays fully readable when JavaScript or motion is unavailable. */
+(() => {
+  'use strict';
+  const headline = document.querySelector('#page-01 [data-cover-typing]');
+  if (!headline || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const fullText = headline.textContent.trim();
+  const delayMs = 400;
+  const msPerCharacter = 43;
+  let index = 0;
+  let timeout;
+
+  // Screen readers receive the complete line instead of each typed character.
+  headline.setAttribute('aria-label', fullText);
+  headline.textContent = '';
+  headline.classList.add('is-typing');
+
+  function typeNext() {
+    if (index < fullText.length) {
+      headline.textContent += fullText.charAt(index++);
+      timeout = window.setTimeout(typeNext, msPerCharacter);
+    } else {
+      headline.classList.remove('is-typing');
+      timeout = undefined;
+    }
+  }
+
+  timeout = window.setTimeout(typeNext, delayMs);
+})();

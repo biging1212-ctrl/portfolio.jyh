@@ -2132,3 +2132,76 @@ button:focus-visible, a:focus-visible{
   #page-02 .page02-gallery-item::after,
   #page-02 .page02-gallery-info {transition:none;}
 }
+
+/* =============================================================
+   PAGE 01 — Figma 3601:6893 / 1920×1080
+   Static name + short English introduction typewriter.
+   The longer Korean body remains readable without waiting.
+   ============================================================= */
+#page-01 .stage {
+  background: #f9f9f9;
+}
+#page-01 .cover-services .service-item {
+  font: 600 16px/20px var(--font-latin);
+  letter-spacing: -0.32px;
+  color: #313131;
+}
+#page-01 .cover-intro-title {
+  position: absolute;
+  left: 101px;
+  top: 498px;
+  color: #c7c7c7;
+  font: 800 30px/39px var(--font-latin);
+  letter-spacing: -1.2px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+#page-01 .cover-intro-body {
+  position: absolute;
+  left: 100px;
+  top: 544px;
+  color: #c7c7c7;
+  font: 600 28px/42px var(--font-ko);
+  letter-spacing: -1.12px;
+  white-space: nowrap;
+}
+#page-01 .cover-intro-body p {
+  margin: 0;
+}
+#page-01 .cover-year {
+  left: 1478px;
+  top: 927px;
+  right: auto;
+  bottom: auto;
+  width: 342px;
+  height: 54px;
+  gap: 0;
+  justify-content: space-between;
+  font: 800 45px/1.2 var(--font-latin);
+  letter-spacing: -1.8px;
+}
+#page-01 .cover-year .cover-bracket {
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+}
+#page-01 .cover-intro-title.is-typing::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin-left: 5px;
+  background: #9b9b9b;
+  vertical-align: -0.1em;
+  animation: page01-caret-blink 0.75s steps(1, end) infinite;
+}
+@keyframes page01-caret-blink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #page-01 .cover-intro-title.is-typing::after {
+    animation: none;
+    display: none;
+  }
+}
